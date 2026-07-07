@@ -187,23 +187,14 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<ForumTopic>>> GetAnimeForumTopicsAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.Forum };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<ForumTopic>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedForum)]
+		public Task<BaseJikanResponse<ICollection<ForumTopic>>> GetAnimeForumTopicsAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedForum);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<ForumTopic>>> GetAnimeForumTopicsAsync(long id, ForumTopicType type, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsValidEnum(type, nameof(type));
-
-			var queryParams = $"?filter={type.GetDescription()}";
-			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.Forum + queryParams };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<ForumTopic>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedForum)]
+		public Task<BaseJikanResponse<ICollection<ForumTopic>>> GetAnimeForumTopicsAsync(long id, ForumTopicType type, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedForum);
 
 		/// <inheritdoc />
 		public async Task<BaseJikanResponse<AnimeVideos>> GetAnimeVideosAsync(long id, CancellationToken cancellationToken = default)
@@ -264,23 +255,14 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>> GetAnimeUserUpdatesAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.UserUpdates };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
+		public Task<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>> GetAnimeUserUpdatesAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserUpdates);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>> GetAnimeUserUpdatesAsync(long id, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsGreaterThanZero(page, nameof(page));
-
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.UserUpdates + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
+		public Task<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>> GetAnimeUserUpdatesAsync(long id, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserUpdates);
 
 		/// <inheritdoc />
 		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetAnimeReviewsAsync(long id, CancellationToken cancellationToken = default)
@@ -431,23 +413,14 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<ForumTopic>>> GetMangaForumTopicsAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.Forum };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<ForumTopic>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedForum)]
+		public Task<BaseJikanResponse<ICollection<ForumTopic>>> GetMangaForumTopicsAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedForum);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<ForumTopic>>> GetMangaForumTopicsAsync(long id, ForumTopicType type, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsValidEnum(type, nameof(type));
-
-			var queryParams = $"?filter={type.GetDescription()}";
-			var endpointParts = new[] { JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.Forum + queryParams };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<ForumTopic>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedForum)]
+		public Task<BaseJikanResponse<ICollection<ForumTopic>>> GetMangaForumTopicsAsync(long id, ForumTopicType type, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedForum);
 
 		/// <inheritdoc />
 		public async Task<BaseJikanResponse<ICollection<ImagesSet>>> GetMangaPicturesAsync(long id, CancellationToken cancellationToken = default)
@@ -474,23 +447,14 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<MangaUserUpdate>>> GetMangaUserUpdatesAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.UserUpdates };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<MangaUserUpdate>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
+		public Task<PaginatedJikanResponse<ICollection<MangaUserUpdate>>> GetMangaUserUpdatesAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserUpdates);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<MangaUserUpdate>>> GetMangaUserUpdatesAsync(long id, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsGreaterThanZero(page, nameof(page));
-
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.UserUpdates + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<MangaUserUpdate>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
+		public Task<PaginatedJikanResponse<ICollection<MangaUserUpdate>>> GetMangaUserUpdatesAsync(long id, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserUpdates);
 
 		/// <inheritdoc />
 		public async Task<BaseJikanResponse<ICollection<Recommendation>>> GetMangaRecommendationsAsync(long id, CancellationToken cancellationToken = default)
@@ -908,204 +872,123 @@ namespace JikanDotNet
 		#region Club methods
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<Club>> GetClubAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Clubs, id.ToString() };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<Club>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<BaseJikanResponse<Club>> GetClubAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<ClubMember>>> GetClubMembersAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Clubs, id.ToString(), JikanEndpointConsts.Members };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<ClubMember>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<PaginatedJikanResponse<ICollection<ClubMember>>> GetClubMembersAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<ClubMember>>> GetClubMembersAsync(long id, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Clubs, id.ToString(), JikanEndpointConsts.Members + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<ClubMember>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<PaginatedJikanResponse<ICollection<ClubMember>>> GetClubMembersAsync(long id, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<ClubStaff>>> GetClubStaffAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Clubs, id.ToString(), JikanEndpointConsts.Staff };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<ClubStaff>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<BaseJikanResponse<ICollection<ClubStaff>>> GetClubStaffAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ClubRelations>> GetClubRelationsAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Clubs, id.ToString(), JikanEndpointConsts.Relations };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ClubRelations>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<BaseJikanResponse<ClubRelations>> GetClubRelationsAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
 
 		#endregion Club methods
 
 		#region User methods
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserProfile>> GetUserProfileAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserProfile>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserProfile>> GetUserProfileAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserProfile>> GetUserByIdAsync(long id, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(id, nameof(id));
-			var endpointParts = new[] { JikanEndpointConsts.Users, "userbyid", id.ToString() };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserProfile>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserProfile>> GetUserByIdAsync(long id, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserStatistics>> GetUserStatisticsAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Statistics };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserStatistics>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserStatistics>> GetUserStatisticsAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserFavorites>> GetUserFavoritesAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Favorites };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserFavorites>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserFavorites>> GetUserFavoritesAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserUpdates>> GetUserUpdatesAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.UserUpdates };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserUpdates>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserUpdates>> GetUserUpdatesAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserAbout>> GetUserAboutAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.About };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserAbout>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserAbout>> GetUserAboutAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<HistoryEntry>>> GetUserHistoryAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.History };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<HistoryEntry>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<ICollection<HistoryEntry>>> GetUserHistoryAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<HistoryEntry>>> GetUserHistoryAsync(string username, UserHistoryExtension historyExtension, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			Guard.IsValidEnum(historyExtension, nameof(historyExtension));
-			var queryParams = $"?filter={historyExtension.GetDescription()}";
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.History + queryParams };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<HistoryEntry>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<ICollection<HistoryEntry>>> GetUserHistoryAsync(string username, UserHistoryExtension historyExtension, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Friend>>> GetUserFriendsAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Friends };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Friend>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<Friend>>> GetUserFriendsAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Friend>>> GetUserFriendsAsync(string username, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Friends + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Friend>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<Friend>>> GetUserFriendsAsync(string username, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetUserReviewsAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Reviews };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<Review>>> GetUserReviewsAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetUserReviewsAsync(string username, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Reviews + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<Review>>> GetUserReviewsAsync(string username, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<UserRecommendation>>> GetUserRecommendationsAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Recommendations };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<UserRecommendation>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<UserRecommendation>>> GetUserRecommendationsAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<UserRecommendation>>> GetUserRecommendationsAsync(string username, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Recommendations + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<UserRecommendation>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<UserRecommendation>>> GetUserRecommendationsAsync(string username, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<MalUrl>>> GetUserClubsAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Clubs };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<MalUrl>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<MalUrl>>> GetUserClubsAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<MalUrl>>> GetUserClubsAsync(string username, int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Clubs + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<MalUrl>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<MalUrl>>> GetUserClubsAsync(string username, int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<ICollection<ExternalLink>>> GetUserExternalLinksAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.External };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<ExternalLink>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<ICollection<ExternalLink>>> GetUserExternalLinksAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<BaseJikanResponse<UserFull>> GetUserFullDataAsync(string username, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNullOrWhiteSpace(username, nameof(username));
-			var endpointParts = new[] { JikanEndpointConsts.Users, username, JikanEndpointConsts.Full };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserFull>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserFull>> GetUserFullDataAsync(string username, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		#endregion User methods
 
@@ -1140,53 +1023,39 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc/>
-		public async Task<BaseJikanResponse<UserProfile>> GetRandomUserAsync(CancellationToken cancellationToken = default)
-		{
-			var endpointParts = new[] { JikanEndpointConsts.Random, JikanEndpointConsts.Users };
-			return await ExecuteGetRequestAsync<BaseJikanResponse<UserProfile>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<BaseJikanResponse<UserProfile>> GetRandomUserAsync(CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		#endregion GetRandom methods
 		
 		#region Watch methods
-		
-		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<WatchEpisode>>> GetWatchRecentEpisodesAsync(CancellationToken cancellationToken = default)
-		{
-			var endpointParts = new[] { JikanEndpointConsts.Watch, JikanEndpointConsts.Episodes };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<WatchEpisode>>>(endpointParts, cancellationToken);
-		}
-		
-		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<WatchEpisode>>> GetWatchPopularEpisodesAsync(CancellationToken cancellationToken = default)
-		{
-			var endpointParts = new[] { JikanEndpointConsts.Watch, JikanEndpointConsts.Episodes, JikanEndpointConsts.Popular };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<WatchEpisode>>>(endpointParts, cancellationToken);
-		}
-		
-		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchRecentPromosAsync(CancellationToken cancellationToken = default)
-		{
-			var endpointParts = new[] { JikanEndpointConsts.Watch, JikanEndpointConsts.Promos };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<WatchPromoVideo>>>(endpointParts, cancellationToken);
-		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchRecentPromosAsync(int page, CancellationToken cancellationToken = default)
-		{
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Watch, JikanEndpointConsts.Promos + queryParams };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<WatchPromoVideo>>>(endpointParts, cancellationToken);
-		}
-		
+		[Obsolete(ErrorMessagesConst.UnsupportedWatch)]
+		public Task<PaginatedJikanResponse<ICollection<WatchEpisode>>> GetWatchRecentEpisodesAsync(CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedWatch);
+
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchPopularPromosAsync(CancellationToken cancellationToken = default)
-		{
-			var endpointParts = new[] { JikanEndpointConsts.Watch, JikanEndpointConsts.Promos, JikanEndpointConsts.Popular };
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<WatchPromoVideo>>>(endpointParts, cancellationToken);
-		}
-		
+		[Obsolete(ErrorMessagesConst.UnsupportedWatch)]
+		public Task<PaginatedJikanResponse<ICollection<WatchEpisode>>> GetWatchPopularEpisodesAsync(CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedWatch);
+
+		/// <inheritdoc />
+		[Obsolete(ErrorMessagesConst.UnsupportedWatch)]
+		public Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchRecentPromosAsync(CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedWatch);
+
+		/// <inheritdoc />
+		[Obsolete(ErrorMessagesConst.UnsupportedWatch)]
+		public Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchRecentPromosAsync(int page, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedWatch);
+
+		/// <inheritdoc />
+		[Obsolete(ErrorMessagesConst.UnsupportedWatch)]
+		public Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchPopularPromosAsync(CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedWatch);
+
 		#endregion
 
 		#region Reviews methods
@@ -1312,26 +1181,24 @@ namespace JikanDotNet
 		}
 	
 		/// <inheritdoc />
-		public  Task<PaginatedJikanResponse<ICollection<UserMetadata>>> SearchUserAsync(string query, CancellationToken cancellationToken = default) => SearchUserAsync(new UserSearchConfig {Query = query}, cancellationToken);
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<UserMetadata>>> SearchUserAsync(string query, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<UserMetadata>>> SearchUserAsync(UserSearchConfig searchConfig, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNull(searchConfig, nameof(searchConfig));
-			var endpointParts = new[] {JikanEndpointConsts.Users + searchConfig.ConfigToString()};
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<UserMetadata>>>(endpointParts, cancellationToken);
-		}
-		
-		/// <inheritdoc />
-		public  Task<PaginatedJikanResponse<ICollection<Club>>> SearchClubAsync(string query, CancellationToken cancellationToken = default) => SearchClubAsync(new ClubSearchConfig {Query = query}, cancellationToken);
+		[Obsolete(ErrorMessagesConst.UnsupportedUserData)]
+		public Task<PaginatedJikanResponse<ICollection<UserMetadata>>> SearchUserAsync(UserSearchConfig searchConfig, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedUserData);
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Club>>> SearchClubAsync(ClubSearchConfig searchConfig, CancellationToken cancellationToken = default)
-		{
-			Guard.IsNotNull(searchConfig, nameof(searchConfig));
-			var endpointParts = new[] {JikanEndpointConsts.Clubs + searchConfig.ConfigToString()};
-			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Club>>>(endpointParts, cancellationToken);
-		}
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<PaginatedJikanResponse<ICollection<Club>>> SearchClubAsync(string query, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
+
+		/// <inheritdoc />
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
+		public Task<PaginatedJikanResponse<ICollection<Club>>> SearchClubAsync(ClubSearchConfig searchConfig, CancellationToken cancellationToken = default)
+			=> throw new NotSupportedException(ErrorMessagesConst.UnsupportedClub);
 
 		#endregion Search methods
 

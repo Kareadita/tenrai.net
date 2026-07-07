@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using JikanDotNet.Consts;
 
 namespace JikanDotNet
 {
@@ -84,6 +86,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of anime.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collections of forum topics related to anime with given MAL id.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedForum)]
         Task<BaseJikanResponse<ICollection<ForumTopic>>> GetAnimeForumTopicsAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -93,6 +96,7 @@ namespace JikanDotNet
         /// <param name="type">ForumTopicType filter</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collections of forum topics related to anime with given MAL id.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedForum)]
         Task<BaseJikanResponse<ICollection<ForumTopic>>> GetAnimeForumTopicsAsync(long id, ForumTopicType type, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -158,6 +162,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of anime.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of anime user updates.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
         Task<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>> GetAnimeUserUpdatesAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -167,6 +172,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 75 records of top ranging (e.g. 1 will return first 75 records, 2 will return record from 76 to 150 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of anime user updates.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
         Task<PaginatedJikanResponse<ICollection<AnimeUserUpdate>>> GetAnimeUserUpdatesAsync(long id, int page, CancellationToken cancellationToken = default);
         
         /// <summary>
@@ -269,6 +275,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of manga.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collections of forum topics related to manga with given MAL id.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedForum)]
         Task<BaseJikanResponse<ICollection<ForumTopic>>> GetMangaForumTopicsAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -278,6 +285,7 @@ namespace JikanDotNet
         /// <param name="type">ForumTopicType filter</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collections of forum topics related to manga with given MAL id.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedForum)]
         Task<BaseJikanResponse<ICollection<ForumTopic>>> GetMangaForumTopicsAsync(long id, ForumTopicType type, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -310,6 +318,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of manga.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of manga user updates.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
         Task<PaginatedJikanResponse<ICollection<MangaUserUpdate>>> GetMangaUserUpdatesAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -319,6 +328,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 75 records of top ranging (e.g. 1 will return first 75 records, 2 will return record from 76 to 150 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of manga user updates.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserUpdates)]
         Task<PaginatedJikanResponse<ICollection<MangaUserUpdate>>> GetMangaUserUpdatesAsync(long id, int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -777,6 +787,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of the club.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Club's profile information.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedClub)]
         Task<BaseJikanResponse<Club>> GetClubAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -785,6 +796,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of the club.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Club's member list.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedClub)]
         Task<PaginatedJikanResponse<ICollection<ClubMember>>> GetClubMembersAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -794,6 +806,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 36 records of top ranging (e.g. 1 will return first 36 records, 2 will return record from 37 to 72 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Club's member list.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedClub)]
         Task<PaginatedJikanResponse<ICollection<ClubMember>>> GetClubMembersAsync(long id, int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -802,6 +815,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of the club.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Club's staff list.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedClub)]
         Task<BaseJikanResponse<ICollection<ClubStaff>>> GetClubStaffAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -810,6 +824,7 @@ namespace JikanDotNet
         /// <param name="id">MAL id of the club.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Club's related entities collections..</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedClub)]
         Task<BaseJikanResponse<ClubRelations>> GetClubRelationsAsync(long id, CancellationToken cancellationToken = default);
 
         #endregion Club requests
@@ -822,6 +837,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's profile with given username.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserProfile>> GetUserProfileAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -830,6 +846,7 @@ namespace JikanDotNet
         /// <param name="id">Numeric MAL user id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User profile by id.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserProfile>> GetUserByIdAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -838,6 +855,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's anime and manga statistics.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserStatistics>> GetUserStatisticsAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -846,6 +864,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's favorite section..</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserFavorites>> GetUserFavoritesAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -854,6 +873,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's updates on anime/manga progress.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserUpdates>> GetUserUpdatesAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -862,6 +882,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's description on the profile.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserAbout>> GetUserAboutAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -870,6 +891,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's profile with given username.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<ICollection<HistoryEntry>>> GetUserHistoryAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -879,6 +901,7 @@ namespace JikanDotNet
         /// <param name="filter">Option to filter history.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's profile with given username.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<ICollection<HistoryEntry>>> GetUserHistoryAsync(string username, UserHistoryExtension filter, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -887,6 +910,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's friends with given username.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<Friend>>> GetUserFriendsAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -896,6 +920,7 @@ namespace JikanDotNet
         /// <param name="page">Index of the page.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Information about user's friends with given username.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<Friend>>> GetUserFriendsAsync(string username, int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -904,6 +929,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User's reviews.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<Review>>> GetUserReviewsAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -913,6 +939,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 10 records of top ranging (e.g. 1 will return first 10 records, 2 will return record from 11 to 21 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User's reviews.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<Review>>> GetUserReviewsAsync(string username, int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -921,6 +948,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User's recommendations.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<UserRecommendation>>> GetUserRecommendationsAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -930,6 +958,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 10 records of top ranging (e.g. 1 will return first 10 records, 2 will return record from 11 to 21 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User's recommendations.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<UserRecommendation>>> GetUserRecommendationsAsync(string username, int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -938,6 +967,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User's clubs.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<MalUrl>>> GetUserClubsAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -947,6 +977,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 10 records of top ranging (e.g. 1 will return first 10 records, 2 will return record from 11 to 21 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User's clubs.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<MalUrl>>> GetUserClubsAsync(string username, int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -955,6 +986,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of external services links related to anime.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<ICollection<ExternalLink>>> GetUserExternalLinksAsync(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -963,6 +995,7 @@ namespace JikanDotNet
         /// <param name="username">Username.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>User profile with additional data.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserFull>> GetUserFullDataAsync(string username, CancellationToken cancellationToken = default);
 
         #endregion User requests
@@ -1002,6 +1035,7 @@ namespace JikanDotNet
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Random character</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<BaseJikanResponse<UserProfile>> GetRandomUserAsync(CancellationToken cancellationToken = default);
 
         #endregion
@@ -1081,6 +1115,7 @@ namespace JikanDotNet
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of recently released episodes details..</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedWatch)]
         Task<PaginatedJikanResponse<ICollection<WatchEpisode>>> GetWatchRecentEpisodesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -1088,6 +1123,7 @@ namespace JikanDotNet
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of popular episodes details.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedWatch)]
         Task<PaginatedJikanResponse<ICollection<WatchEpisode>>> GetWatchPopularEpisodesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -1095,6 +1131,7 @@ namespace JikanDotNet
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of recently released promos details.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedWatch)]
         Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchRecentPromosAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -1103,6 +1140,7 @@ namespace JikanDotNet
         /// <param name="page">Index of page folding 100 records of top ranging (e.g. 1 will return first 100 records, 2 will return record from 101 to 200 etc.)</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of recently released promos details.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedWatch)]
         Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchRecentPromosAsync(int page, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -1110,6 +1148,7 @@ namespace JikanDotNet
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Collection of popular promos details.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedWatch)]
         Task<PaginatedJikanResponse<ICollection<WatchPromoVideo>>> GetWatchPopularPromosAsync(CancellationToken cancellationToken = default);
 
         #endregion Watch requests
@@ -1186,6 +1225,7 @@ namespace JikanDotNet
         /// <param name="query">Search query.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>List of result related to search query.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<UserMetadata>>> SearchUserAsync(string query, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -1194,6 +1234,7 @@ namespace JikanDotNet
         /// <param name="searchConfig">Additional configuration for advanced search.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>List of result related to search query.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedUserData)]
         Task<PaginatedJikanResponse<ICollection<UserMetadata>>> SearchUserAsync(UserSearchConfig searchConfig, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -1202,6 +1243,7 @@ namespace JikanDotNet
         /// <param name="query">Search query.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>List of result related to search query.</returns>
+        [Obsolete(ErrorMessagesConst.UnsupportedClub)]
         Task<PaginatedJikanResponse<ICollection<Club>>> SearchClubAsync(string query, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -1210,6 +1252,7 @@ namespace JikanDotNet
 		/// <param name="searchConfig">Additional configuration for advanced search.</param>
 		/// <param name="cancellationToken">Cancellation token.</param>
 		/// <returns>List of result related to search query.</returns>
+		[Obsolete(ErrorMessagesConst.UnsupportedClub)]
 		Task<PaginatedJikanResponse<ICollection<Club>>> SearchClubAsync(ClubSearchConfig searchConfig, CancellationToken cancellationToken = default);
 
 		#endregion Search requests
