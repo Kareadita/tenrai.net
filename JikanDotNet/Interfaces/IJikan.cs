@@ -232,6 +232,14 @@ namespace JikanDotNet
         /// <returns>Anime with additional data.</returns>
         Task<BaseJikanResponse<AnimeFull>> GetAnimeFullDataAsync(long id, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Returns the complete collection of anime MAL IDs available in the catalogue.
+        /// </summary>
+        /// <remarks>Requires a Tenrai Server Key (set <see cref="Config.JikanClientConfiguration.ServerKey"/>); otherwise the API responds with 401.</remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of anime MAL IDs.</returns>
+        Task<BaseJikanResponse<ICollection<long>>> GetAnimeIdsAsync(CancellationToken cancellationToken = default);
+
         #endregion Anime requests
 
         #region Manga requests
@@ -380,6 +388,14 @@ namespace JikanDotNet
         /// <returns>Manga with additional data.</returns>
         Task<BaseJikanResponse<MangaFull>> GetMangaFullDataAsync(long id, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Returns the complete collection of manga MAL IDs available in the catalogue.
+        /// </summary>
+        /// <remarks>Requires a Tenrai Server Key (set <see cref="Config.JikanClientConfiguration.ServerKey"/>); otherwise the API responds with 401.</remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of manga MAL IDs.</returns>
+        Task<BaseJikanResponse<ICollection<long>>> GetMangaIdsAsync(CancellationToken cancellationToken = default);
+
         #endregion Manga requests
 
         #region Character requests
@@ -432,6 +448,14 @@ namespace JikanDotNet
         /// <returns>Character with additional data.</returns>
         Task<BaseJikanResponse<CharacterFull>> GetCharacterFullDataAsync(long id, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Returns the complete collection of character MAL IDs available in the catalogue.
+        /// </summary>
+        /// <remarks>Requires a Tenrai Server Key (set <see cref="Config.JikanClientConfiguration.ServerKey"/>); otherwise the API responds with 401.</remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of character MAL IDs.</returns>
+        Task<BaseJikanResponse<ICollection<long>>> GetCharacterIdsAsync(CancellationToken cancellationToken = default);
+
         #endregion Character requests
 
         #region Person requests
@@ -483,6 +507,14 @@ namespace JikanDotNet
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Person with additional data.</returns>
         Task<BaseJikanResponse<PersonFull>> GetPersonFullDataAsync(long id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Returns the complete collection of person MAL IDs available in the catalogue.
+        /// </summary>
+        /// <remarks>Requires a Tenrai Server Key (set <see cref="Config.JikanClientConfiguration.ServerKey"/>); otherwise the API responds with 401.</remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of person MAL IDs.</returns>
+        Task<BaseJikanResponse<ICollection<long>>> GetPersonIdsAsync(CancellationToken cancellationToken = default);
 
         #endregion Person requests
 
@@ -757,6 +789,14 @@ namespace JikanDotNet
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Full Information about producer.</returns>
         Task<BaseJikanResponse<ProducerFull>> GetProducerFullDataAsync(long id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Returns the complete collection of producer MAL IDs available in the catalogue.
+        /// </summary>
+        /// <remarks>Requires a Tenrai Server Key (set <see cref="Config.JikanClientConfiguration.ServerKey"/>); otherwise the API responds with 401.</remarks>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Collection of producer MAL IDs.</returns>
+        Task<BaseJikanResponse<ICollection<long>>> GetProducerIdsAsync(CancellationToken cancellationToken = default);
 
         #endregion Producer requests
 

@@ -321,6 +321,13 @@ namespace JikanDotNet
 			return await ExecuteGetRequestAsync<BaseJikanResponse<AnimeFull>>(endpointParts, cancellationToken);
 		}
 
+		/// <inheritdoc />
+		public async Task<BaseJikanResponse<ICollection<long>>> GetAnimeIdsAsync(CancellationToken cancellationToken = default)
+		{
+			var endpointParts = new[] { JikanEndpointConsts.Anime, JikanEndpointConsts.Ids };
+			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<long>>>(endpointParts, cancellationToken);
+		}
+
 		#endregion Anime methods
 
 		#region Character methods
@@ -371,6 +378,13 @@ namespace JikanDotNet
 			Guard.IsGreaterThanZero(id, nameof(id));
 			var endpointParts = new[] { JikanEndpointConsts.Characters, id.ToString(), JikanEndpointConsts.Full };
 			return await ExecuteGetRequestAsync<BaseJikanResponse<CharacterFull>>(endpointParts, cancellationToken);
+		}
+
+		/// <inheritdoc />
+		public async Task<BaseJikanResponse<ICollection<long>>> GetCharacterIdsAsync(CancellationToken cancellationToken = default)
+		{
+			var endpointParts = new[] { JikanEndpointConsts.Characters, JikanEndpointConsts.Ids };
+			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<long>>>(endpointParts, cancellationToken);
 		}
 
 		#endregion Character methods
@@ -505,6 +519,13 @@ namespace JikanDotNet
 			return await ExecuteGetRequestAsync<BaseJikanResponse<MangaFull>>(endpointParts, cancellationToken);
 		}
 
+		/// <inheritdoc />
+		public async Task<BaseJikanResponse<ICollection<long>>> GetMangaIdsAsync(CancellationToken cancellationToken = default)
+		{
+			var endpointParts = new[] { JikanEndpointConsts.Manga, JikanEndpointConsts.Ids };
+			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<long>>>(endpointParts, cancellationToken);
+		}
+
 		#endregion Manga methods
 
 		#region Person methods
@@ -555,6 +576,13 @@ namespace JikanDotNet
 			Guard.IsGreaterThanZero(id, nameof(id));
 			var endpointParts = new[] { JikanEndpointConsts.People, id.ToString(), JikanEndpointConsts.Full };
 			return await ExecuteGetRequestAsync<BaseJikanResponse<PersonFull>>(endpointParts, cancellationToken);
+		}
+
+		/// <inheritdoc />
+		public async Task<BaseJikanResponse<ICollection<long>>> GetPersonIdsAsync(CancellationToken cancellationToken = default)
+		{
+			var endpointParts = new[] { JikanEndpointConsts.People, JikanEndpointConsts.Ids };
+			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<long>>>(endpointParts, cancellationToken);
 		}
 
 		#endregion Person methods
@@ -845,6 +873,13 @@ namespace JikanDotNet
 			Guard.IsGreaterThanZero(id, nameof(id));
 			var endpointParts = new[] { JikanEndpointConsts.Producers, id.ToString(), JikanEndpointConsts.Full };
 			return await ExecuteGetRequestAsync<BaseJikanResponse<ProducerFull>>(endpointParts, cancellationToken);
+		}
+
+		/// <inheritdoc />
+		public async Task<BaseJikanResponse<ICollection<long>>> GetProducerIdsAsync(CancellationToken cancellationToken = default)
+		{
+			var endpointParts = new[] { JikanEndpointConsts.Producers, JikanEndpointConsts.Ids };
+			return await ExecuteGetRequestAsync<BaseJikanResponse<ICollection<long>>>(endpointParts, cancellationToken);
 		}
 
 		#endregion Producer methods

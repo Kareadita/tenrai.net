@@ -47,5 +47,6 @@
 		internal const string Streaming = "streaming";
 		internal const string Full = "full";
 		internal const string Now = "now";
+		internal const string Ids = "ids";
 	}
 }
