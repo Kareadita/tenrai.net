@@ -1,0 +1,1 @@
+Ensure if merging into `master`, you have (version number) to trigger pipeline
