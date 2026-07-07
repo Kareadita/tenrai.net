@@ -1,4 +1,4 @@
- [![Discord Server](https://img.shields.io/discord/460491088004907029.svg?style=flat&logo=discord)](https://discord.gg/4tvCr36) ![build status](https://img.shields.io/nuget/v/JikanDotNet.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GitHub issues open](https://img.shields.io/github/issues/Ervie/jikan.net.svg?maxAge=2592000)]() 
+![build status](https://img.shields.io/nuget/v/JikanDotNet.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GitHub issues open](https://img.shields.io/github/issues/Ervie/jikan.net.svg?maxAge=2592000)]() 
 
 # tenrai.net
 
@@ -14,10 +14,10 @@ Massive thanks to @Ervie who wrote the Jikan.NET library this is based from (htt
 ### Main attributes
 
 * Written in to work with .NET Standard 2.0, compatible with .NET Framework (4.6.1 or newer) and .NET (6.0 or newer).
-* Fully asynchromous request fetching (can be forced to synchromous if needed).
+* Fully asynchronous request fetching (can be forced to synchromous if needed).
 * Light on dependencies 
     * No dependencies if you are using .NET 6.0+
-    * Single dependancy for .NET Framework (System.Text.Json).
+    * Single dependency for .NET Framework (System.Text.Json).
 * Usable with Dependency Injection.
 
 # List of features

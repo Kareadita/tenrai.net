@@ -5,7 +5,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-PROJECT_PATH="JikanDotNet/JikanDotNet.csproj"
+PROJECT_PATH="Tenrai/Tenrai.csproj"
 NUGET_SOURCE="https://api.nuget.org/v3/index.json"
 
 if [[ ! -f "$PROJECT_PATH" ]]; then
@@ -21,10 +21,10 @@ if [[ -z "$VERSION" ]]; then
   exit 1
 fi
 
-PACKAGE_ID="JikanDotNet"
+PACKAGE_ID="Tenrai.Net"
 NUPKG_NAME="${PACKAGE_ID}.${VERSION}.nupkg"
 # Pack outputs to bin/Release by default
-NUPKG_PATH="JikanDotNet/bin/Release/${NUPKG_NAME}"
+NUPKG_PATH="Tenrai/bin/Release/${NUPKG_NAME}"
 
 if [[ -z "${NUGET_API_KEY:-}" ]]; then
   echo "Error: NUGET_API_KEY environment variable is not set."

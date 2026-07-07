@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Tenrai/Tenrai.csproj" />
+  <Project Path="Tenrai.Test/Tenrai.Tests.csproj" />
+</Solution>
