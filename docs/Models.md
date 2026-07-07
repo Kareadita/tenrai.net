@@ -1,18 +1,18 @@
 # Response Models
 
-Response data is wrapped in `BaseJikanResponse<T>` or `PaginatedJikanResponse<T>`. Access the actual data via the `Data` property.
+Response data is wrapped in `BaseTenraiResponse<T>` or `PaginatedTenraiResponse<T>`. Access the actual data via the `Data` property.
 
 ## Response wrappers
 
-### BaseJikanResponse&lt;T&gt;
+### BaseTenraiResponse&lt;T&gt;
 
 | Property | Type | Description |
 |----------|------|-------------|
 | Data | T | The response data |
 
-### PaginatedJikanResponse&lt;T&gt;
+### PaginatedTenraiResponse&lt;T&gt;
 
-Extends `BaseJikanResponse<T>` with pagination metadata.
+Extends `BaseTenraiResponse<T>` with pagination metadata.
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -225,6 +225,8 @@ Extends `BaseJikanResponse<T>` with pagination metadata.
 | ChaptersRead | int? | Chapters read (manga) |
 | Score | int | Review score |
 | IsSpoiler | bool | Contains spoilers |
+| IsPreliminary | bool | Written before the entry finished airing/publishing |
+| Tags | ICollection&lt;string&gt; | Sentiment tags (e.g. "Recommended", "Mixed Feelings", "Not Recommended") |
 
 ---
 
