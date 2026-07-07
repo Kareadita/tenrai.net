@@ -2,24 +2,26 @@
 
 ## Purpose
 
-Jikan.net is a .NET wrapper for the Jikan REST API. The public package is `JikanDotNet`, and the main goal is to expose strongly typed, asynchronous access to MyAnimeList data returned by Jikan.
+Tenrai.Net is a .NET wrapper for the Tenrai REST API (`https://api.tenrai.org/v1`), a drop-in successor to the Jikan v4 API. The public package is `Tenrai.Net` (assembly/namespace `Tenrai`), and the main goal is to expose strongly typed, asynchronous access to the MyAnimeList data returned by Tenrai.
 
 ## Start Here
 
 - `README.md` explains the project, package installation, supported API areas, and changelog pointers.
 - `docs/README.md` is the documentation index and contributor guide for public API docs.
-- `JikanDotNet.slnx` contains the library project and the xUnit test project.
-- `JikanDotNet/Jikan.cs` contains the endpoint implementations.
-- `JikanDotNet/Interfaces/IJikan.cs` defines the public client surface.
-- `JikanDotNet/Model/Response`, `JikanDotNet/Model/Base`, `JikanDotNet/Model/Search`, and `JikanDotNet/Enumerations` hold public response models, wrappers, search configs, and enums.
-- `JikanDotNet.Test` contains xUnit tests. Many tests call the live public Jikan API and may be network-sensitive.
+- `docs/Tenrai-Conversion-Plan.md` tracks the Jikan.net → Tenrai.Net conversion (phases, decisions, differences).
+- `Tenrai.slnx` contains the library project and the xUnit test project.
+- `Tenrai/TenraiClient.cs` contains the endpoint implementations.
+- `Tenrai/Interfaces/ITenrai.cs` defines the public client surface.
+- `Tenrai/Model/Response`, `Tenrai/Model/Base`, `Tenrai/Model/Search`, and `Tenrai/Enumerations` hold public response models, wrappers, search configs, and enums.
+- `Tenrai.Test` contains xUnit tests. Many tests call the live public Tenrai API and may be network-sensitive.
 
 ## Repository Rules
 
 - Preserve public API compatibility unless the task explicitly asks for a breaking change.
-- Keep `IJikan` and `Jikan` aligned when adding or changing client methods.
+- Keep `ITenrai` and `TenraiClient` aligned when adding or changing client methods.
+- Endpoints Tenrai does not implement (users, clubs, watch, forum topics, user updates) are kept but marked `[Obsolete]` and throw `NotSupportedException`; do not re-enable them against Tenrai.
 - Validate public inputs with `Guard` before building endpoint routes.
-- Prefer `JikanEndpointConsts` for route segments instead of repeating string literals.
+- Prefer `TenraiEndpointConsts` for route segments instead of repeating string literals.
 - Response models should use `System.Text.Json.Serialization.JsonPropertyName` for JSON field mapping.
 - Keep XML documentation on public types and members meaningful because the package emits documentation files.
 - In C# code, use braces for `if` and `else` blocks, including single-line branches.
@@ -38,17 +40,17 @@ When adding a new endpoint, update `docs/API.md` with the method description, pa
 Use the smallest verification that matches the change:
 
 ```bash
-dotnet build JikanDotNet.slnx
+dotnet build Tenrai.slnx
 ```
 
 ```bash
-dotnet test JikanDotNet.Test/JikanDotNet.Tests.csproj
+dotnet test Tenrai.Test/Tenrai.Tests.csproj
 ```
 
 For targeted test runs, prefer a filter, for example:
 
 ```bash
-dotnet test JikanDotNet.Test/JikanDotNet.Tests.csproj --filter FullyQualifiedName~GetAnimeAsyncTests
+dotnet test Tenrai.Test/Tenrai.Tests.csproj --filter FullyQualifiedName~GetAnimeAsyncTests
 ```
 
-Before relying on full test results, remember that many tests hit the live Jikan API and can fail because of network, upstream data, or rate limiting rather than local code.
+Before relying on full test results, remember that many tests hit the live Tenrai API and can fail because of network, upstream data, or rate limiting rather than local code.

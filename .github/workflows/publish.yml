@@ -3,7 +3,7 @@ name: Tag and Publish
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   tag-and-publish:
