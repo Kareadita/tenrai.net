@@ -2,68 +2,82 @@
 
 ## Installation
 
-Add JikanDotNet to your project via NuGet.
+Add Tenrai.Net to your project via NuGet.
 
 ### Package Manager
 
 ```
-PM> Install-Package JikanDotNet
+PM> Install-Package Tenrai.Net
 ```
 
 ### .NET CLI
 
 ```
-dotnet add package JikanDotNet
+dotnet add package Tenrai.Net
 ```
 
 Supported target frameworks: `netstandard2.0`, `net6.0`, `net8.0`, and `net10.0`.
 
 ## Initialization
 
-Initialize a `Jikan` instance to make requests:
+Initialize a `TenraiClient` instance to make requests:
 
 ```csharp
-using JikanDotNet;
+using Tenrai;
 
-IJikan jikan = new Jikan();
+ITenrai tenrai = new TenraiClient();
 ```
 
-For custom configuration (rate limiting, exception handling, etc.), use `JikanClientConfiguration`:
+For custom configuration (rate limiting, exception handling, Server Key, etc.), use `TenraiClientConfiguration`:
 
 ```csharp
-using JikanDotNet;
-using JikanDotNet.Config;
+using Tenrai;
+using Tenrai.Config;
 
-var config = new JikanClientConfiguration
+var config = new TenraiClientConfiguration
 {
     SuppressException = false,
     LimiterConfigurations = TaskLimiterConfiguration.Default
 };
-var jikan = new Jikan(config);
+var tenrai = new TenraiClient(config);
 ```
 
 See [Rate Limiting](RateLimiting.md) for limiter options.
 
+### Server Key
+
+Supply a Tenrai Server Key to raise your rate limits (and to access endpoints that require one, such as the bulk `Get*IdsAsync` methods). It is sent as the `X-Server-Key` header:
+
+```csharp
+var config = new TenraiClientConfiguration
+{
+    ServerKey = "your-server-key"
+};
+var tenrai = new TenraiClient(config);
+```
+
+### Custom HttpClient
+
 To customize the HTTP client (base address, timeout, headers, etc.), pass an `HttpClient` to the constructor:
 
 ```csharp
-using JikanDotNet;
-using JikanDotNet.Config;
+using Tenrai;
+using Tenrai.Config;
 using System.Net.Http;
 
 var httpClient = new HttpClient
 {
-    BaseAddress = new Uri("https://api.jikan.moe/v4/"),
+    BaseAddress = new Uri("https://api.tenrai.org/v1/"),
     Timeout = TimeSpan.FromSeconds(10)
 };
-var jikan = new Jikan(new JikanClientConfiguration(), httpClient);
+var tenrai = new TenraiClient(new TenraiClientConfiguration(), httpClient);
 ```
 
-Use a trailing slash on `BaseAddress` so relative request paths resolve correctly.
+Use a trailing slash on `BaseAddress` so relative request paths resolve correctly. Note that when you supply your own `HttpClient`, you are responsible for adding the `X-Server-Key` header yourself.
 
 ## Dependency Injection
 
-Register `Jikan` for dependency injection:
+Register `TenraiClient` for dependency injection:
 
 ### Autofac
 
@@ -72,7 +86,7 @@ public class YourModule : Module
 {
     public override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<Jikan>().As<IJikan>();
+        builder.RegisterType<TenraiClient>().As<ITenrai>();
     }
 }
 ```
@@ -84,7 +98,7 @@ public class YourModule : NinjectModule
 {
     public override void Load()
     {
-        Bind<IJikan>().To<Jikan>();
+        Bind<ITenrai>().To<TenraiClient>();
     }
 }
 ```
@@ -93,43 +107,27 @@ public class YourModule : NinjectModule
 
 ```csharp
 var services = new ServiceCollection()
-    .AddSingleton<IJikan, Jikan>()
+    .AddSingleton<ITenrai, TenraiClient>()
     .BuildServiceProvider();
 ```
 
-The parameterless `Jikan()` constructor is used, which applies default configuration and the public Jikan API endpoint.
+The parameterless `TenraiClient()` constructor is used, which applies default configuration and the public Tenrai API endpoint.
 
 ### HttpClientFactory
 
-`Jikan` accepts an injected `HttpClient`, but it does not expose an `HttpClient`-only constructor, so `AddHttpClient<IJikan, Jikan>()` is not supported. Register a named client and construct `Jikan` manually instead:
+`TenraiClient` accepts an injected `HttpClient`, but it does not expose an `HttpClient`-only constructor, so `AddHttpClient<ITenrai, TenraiClient>()` is not supported. Register a named client and construct `TenraiClient` manually instead:
 
 ```csharp
-services.AddHttpClient("Jikan", client =>
+services.AddHttpClient("Tenrai", client =>
 {
-    client.BaseAddress = new Uri("https://api.jikan.moe/v4/");
+    client.BaseAddress = new Uri("https://api.tenrai.org/v1/");
     client.Timeout = TimeSpan.FromSeconds(10);
 });
 
-services.AddSingleton<IJikan>(sp =>
+services.AddSingleton<ITenrai>(sp =>
 {
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var httpClient = httpClientFactory.CreateClient("Jikan");
-    return new Jikan(new JikanClientConfiguration(), httpClient);
+    var httpClient = httpClientFactory.CreateClient("Tenrai");
+    return new TenraiClient(new TenraiClientConfiguration(), httpClient);
 });
-```
-
-## Using Own Instance of Jikan API
-
-To use a self-hosted instance of the Jikan REST API instead of the public one, set `HttpClient.BaseAddress` when constructing `Jikan`:
-
-```csharp
-using JikanDotNet;
-using JikanDotNet.Config;
-using System.Net.Http;
-
-var httpClient = new HttpClient
-{
-    BaseAddress = new Uri("https://your-jikan-instance.example.com/v4/")
-};
-var jikan = new Jikan(new JikanClientConfiguration(), httpClient);
 ```

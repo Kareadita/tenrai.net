@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Single source of truth: PackageVersion, AssemblyVersion and FileVersion are auto-derived from <Version>. -->
+    <Version>3.0.0</Version>
+    <Authors>Bartłomiej Buchała, Joseph Milazzo</Authors>
+    <Description>A dotnet wrapper for the Tenrai REST API, fetching data from MyAnimeList. Drop-in compatible with the Jikan v4 schema.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/Kareadita/tenrai.net</RepositoryUrl>
+    <PackageId>Tenrai.Net</PackageId>
+    <AssemblyName>Tenrai</AssemblyName>
+    <RootNamespace>Tenrai</RootNamespace>
+    <PackageTags>anime, MAL, myanimelist.net, myanimelist, Tenrai, Jikan, REST, manga, API, wrapper, Tenrai.Net</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Kareadita/tenrai.net</PackageProjectUrl>
+    <LangVersion>latest</LangVersion>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0;net10.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageIcon>tenrai-logo.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="tenrai-logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

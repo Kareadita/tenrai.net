@@ -1,3 +1,23 @@
+## 07.07.2026 - Version 3.0.0
+
+Rebrand of the library from `JikanDotNet` to `Tenrai.Net`, targeting the [Tenrai](https://tenrai.org) REST API (`https://api.tenrai.org/v1`), a drop-in successor to the discontinued Jikan v4 API. This is a major, breaking release. Built on and crediting [@Ervie](https://github.com/Ervie)'s [jikan.net](https://github.com/Ervie/jikan.net).
+
+- Breaking changes
+    - Package renamed `JikanDotNet` → `Tenrai.Net`; assembly and root namespace are now `Tenrai`. Update `using JikanDotNet;` → `using Tenrai;`.
+    - Client type `Jikan` → `TenraiClient`; interface `IJikan` → `ITenrai`.
+    - Response wrappers `BaseJikanResponse<T>`/`PaginatedJikanResponse<T>` → `BaseTenraiResponse<T>`/`PaginatedTenraiResponse<T>`.
+    - `JikanClientConfiguration` → `TenraiClientConfiguration`; `JikanApiError` → `TenraiApiError`; `JikanRequestException`/`JikanValidationException` → `TenraiRequestException`/`TenraiValidationException`.
+    - Base URL now defaults to `https://api.tenrai.org/v1/`.
+    - Review methods (`GetAnimeReviewsAsync`, `GetMangaReviewsAsync`, `GetTopReviewsAsync`, `GetRecent{Anime,Manga}ReviewsAsync`) now take a `ReviewsSearchConfig` instead of `bool includePreliminary`/`bool includeSpoiler` (the old booleans cannot express the new tri-state filters). The simple `long id` overloads are unchanged.
+    - Endpoint families Tenrai does not implement - users, clubs, watch, forum topics, and anime/manga user updates (plus random user and user/club search) — are retained but marked `[Obsolete]` and now throw `NotSupportedException`.
+- Features
+    - Reviews: sort by `newest`/`oldest`/`most_helpful`, tri-state `preliminary`/`spoilers` filters (`Include`/`Exclude`/`Only`), and a `sentiment` filter (`recommended`/`mixed_feelings`/`not_recommended`) via `ReviewsSearchConfig`. `Review` now exposes `Tags` and `IsPreliminary`.
+    - Server Key support: set `TenraiClientConfiguration.ServerKey` to send `X-Server-Key` and automatically raise the rate limit to the 300/min, 5/sec tier.
+    - Bulk ID endpoints: `GetAnimeIdsAsync`, `GetMangaIdsAsync`, `GetCharacterIdsAsync`, `GetPersonIdsAsync`, `GetProducerIdsAsync` (require a Server Key).
+    - Error responses now expose `TenraiApiError.Path` (the request path that produced the error).
+- Notes
+    - Tenrai fixes several Jikan issues server-side: more accurate totals (e.g. `top/anime`), no duplicate entries in list endpoints, precise pagination (`last_visible_page` on review endpoints), and working spoiler sorting.
+
 ## 25.04.2026 - Version 2.10.4
 
 - Fixes
