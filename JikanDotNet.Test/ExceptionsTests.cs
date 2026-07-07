@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using JikanDotNet.Exceptions;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace JikanDotNet.Tests
@@ -11,6 +14,27 @@ namespace JikanDotNet.Tests
 		public ExceptionsTests()
 		{
 			_jikan = new Jikan(new Config.JikanClientConfiguration { SuppressException = true });
+		}
+
+		[Fact]
+		public async Task GetMangaAsync_NonExistentId_ShouldDeserializeTenraiErrorEnvelope()
+		{
+			// Given
+			var jikan = new Jikan();
+
+			// When
+			var func = jikan.Awaiting(x => x.GetMangaAsync(999999999));
+
+			// Then
+			var exceptionAssertion = await func.Should().ThrowExactlyAsync<JikanRequestException>();
+			using (new AssertionScope())
+			{
+				var apiError = exceptionAssertion.Which.ApiError;
+				apiError.Should().NotBeNull();
+				apiError.Status.Should().Be(HttpStatusCode.NotFound);
+				apiError.Type.Should().Be("ResourceNotFoundException");
+				apiError.Path.Should().Contain("/manga/999999999");
+			}
 		}
 
 		[Fact]

@@ -21,12 +21,19 @@ public class TaskLimiterConfiguration : IEquatable<TaskLimiterConfiguration>, IC
     /// <summary> Disable task limiting </summary>
     public static List<TaskLimiterConfiguration> None { get; } = new();
 
-    /// <summary> Default task limiting configuration tuned for public endpoint (https://api.jikan.moe/v4/)</summary>
+    /// <summary> Default task limiting configuration tuned for the public Tenrai tier (https://api.tenrai.org/v1/): 60/min, 3/sec. </summary>
     public static List<TaskLimiterConfiguration> Default { get; } = new()
     {
         new TaskLimiterConfiguration(1, TimeSpan.FromMilliseconds(300)),    // Space every request by at least 300ms
         new TaskLimiterConfiguration(3, TimeSpan.FromMilliseconds(1000)),   // Rate limit for request bursts (3/s)
         new TaskLimiterConfiguration(4, TimeSpan.FromMilliseconds(4000))    // Baseline limit (60/min)
+    };
+
+    /// <summary> Task limiting configuration for the Tenrai Server Key tier (X-Server-Key): 300/min, 5/sec. </summary>
+    public static List<TaskLimiterConfiguration> ServerKey { get; } = new()
+    {
+        new TaskLimiterConfiguration(1, TimeSpan.FromMilliseconds(200)),    // Space every request by at least 200ms
+        new TaskLimiterConfiguration(5, TimeSpan.FromMilliseconds(1000))    // Rate limit for request bursts / baseline (5/s = 300/min)
     };
 
     /// <summary> Initializes a new instance of <see cref="TaskLimiterConfiguration"/>. </summary>

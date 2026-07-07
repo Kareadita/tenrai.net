@@ -53,8 +53,23 @@ namespace JikanDotNet
 		public Jikan(JikanClientConfiguration jikanClientConfiguration, HttpClient httpClient = null)
 		{
 			_jikanConfiguration = jikanClientConfiguration;
-			_limiter = new CompositeTaskLimiter(jikanClientConfiguration.LimiterConfigurations?.Distinct() ?? TaskLimiterConfiguration.None);
-			_httpClient = httpClient ?? DefaultHttpClientProvider.GetDefaultHttpClient();
+			_limiter = new CompositeTaskLimiter(ResolveLimiterConfigurations(jikanClientConfiguration).Distinct());
+			_httpClient = httpClient ?? DefaultHttpClientProvider.GetDefaultHttpClient(serverKey: jikanClientConfiguration.ServerKey);
+		}
+
+		/// <summary>
+		/// Resolves the limiter configuration to use, upgrading to the Server Key tier when a server key
+		/// is supplied and the caller has not overridden the default limiter configuration.
+		/// </summary>
+		private static IEnumerable<TaskLimiterConfiguration> ResolveLimiterConfigurations(JikanClientConfiguration configuration)
+		{
+			if (!string.IsNullOrWhiteSpace(configuration.ServerKey)
+				&& ReferenceEquals(configuration.LimiterConfigurations, TaskLimiterConfiguration.Default))
+			{
+				return TaskLimiterConfiguration.ServerKey;
+			}
+
+			return configuration.LimiterConfigurations ?? TaskLimiterConfiguration.None;
 		}
 
         #endregion Constructors
@@ -268,22 +283,19 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetAnimeReviewsAsync(long id, bool includePreliminary = true, bool includeSpoiler = false, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetAnimeReviewsAsync(long id, CancellationToken cancellationToken = default)
 		{
 			Guard.IsGreaterThanZero(id, nameof(id));
-			var queryParams = $"?preliminary={includePreliminary.ToString().ToLower()}&spoiler={includeSpoiler.ToString().ToLower()}";
-			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.Reviews + queryParams };
+			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.Reviews };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetAnimeReviewsAsync(long id, int page, bool includePreliminary = true, bool includeSpoiler = false, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetAnimeReviewsAsync(long id, ReviewsSearchConfig searchConfig, CancellationToken cancellationToken = default)
 		{
 			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsGreaterThanZero(page, nameof(page));
-
-			var queryParams = $"?page={page}&preliminary={includePreliminary.ToString().ToLower()}&spoiler={includeSpoiler.ToString().ToLower()}";
-			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.Reviews + queryParams };
+			Guard.IsNotNull(searchConfig, nameof(searchConfig));
+			var endpointParts = new[] { JikanEndpointConsts.Anime, id.ToString(), JikanEndpointConsts.Reviews + searchConfig.ConfigToString() };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
 
@@ -489,21 +501,19 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetMangaReviewsAsync(long id, bool includePreliminary = true, bool includeSpoiler = false, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetMangaReviewsAsync(long id, CancellationToken cancellationToken = default)
 		{
 			Guard.IsGreaterThanZero(id, nameof(id));
-			var queryParams = $"?preliminary={includePreliminary.ToString().ToLower()}&spoiler={includeSpoiler.ToString().ToLower()}";
-			var endpointParts = new List<string>() {JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.Reviews + queryParams};
+			var endpointParts = new List<string>() {JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.Reviews};
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetMangaReviewsAsync(long id, int page, bool includePreliminary = true, bool includeSpoiler = false, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetMangaReviewsAsync(long id, ReviewsSearchConfig searchConfig, CancellationToken cancellationToken = default)
 		{
 			Guard.IsGreaterThanZero(id, nameof(id));
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}&preliminary={includePreliminary.ToString().ToLower()}&spoiler={includeSpoiler.ToString().ToLower()}";
-			var endpointParts = new List<string>() {JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.Reviews + queryParams};
+			Guard.IsNotNull(searchConfig, nameof(searchConfig));
+			var endpointParts = new List<string>() {JikanEndpointConsts.Manga, id.ToString(), JikanEndpointConsts.Reviews + searchConfig.ConfigToString()};
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
 
@@ -786,11 +796,10 @@ namespace JikanDotNet
 		}
 
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetTopReviewsAsync(int page, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetTopReviewsAsync(ReviewsSearchConfig searchConfig, CancellationToken cancellationToken = default)
 		{
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.TopList, JikanEndpointConsts.Reviews + queryParams };
+			Guard.IsNotNull(searchConfig, nameof(searchConfig));
+			var endpointParts = new[] { JikanEndpointConsts.TopList, JikanEndpointConsts.Reviews + searchConfig.ConfigToString() };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
 
@@ -1188,29 +1197,27 @@ namespace JikanDotNet
 			var endpointParts = new[] { JikanEndpointConsts.Reviews, JikanEndpointConsts.Anime };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
-		
+
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetRecentAnimeReviewsAsync(int page, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetRecentAnimeReviewsAsync(ReviewsSearchConfig searchConfig, CancellationToken cancellationToken = default)
 		{
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Reviews, JikanEndpointConsts.Anime + queryParams };
+			Guard.IsNotNull(searchConfig, nameof(searchConfig));
+			var endpointParts = new[] { JikanEndpointConsts.Reviews, JikanEndpointConsts.Anime + searchConfig.ConfigToString() };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
-		
+
 		/// <inheritdoc />
 		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetRecentMangaReviewsAsync(CancellationToken cancellationToken = default)
 		{
 			var endpointParts = new[] { JikanEndpointConsts.Reviews, JikanEndpointConsts.Manga };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
-		
+
 		/// <inheritdoc />
-		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetRecentMangaReviewsAsync(int page, CancellationToken cancellationToken = default)
+		public async Task<PaginatedJikanResponse<ICollection<Review>>> GetRecentMangaReviewsAsync(ReviewsSearchConfig searchConfig, CancellationToken cancellationToken = default)
 		{
-			Guard.IsGreaterThanZero(page, nameof(page));
-			var queryParams = $"?page={page}";
-			var endpointParts = new[] { JikanEndpointConsts.Reviews, JikanEndpointConsts.Manga + queryParams };
+			Guard.IsNotNull(searchConfig, nameof(searchConfig));
+			var endpointParts = new[] { JikanEndpointConsts.Reviews, JikanEndpointConsts.Manga + searchConfig.ConfigToString() };
 			return await ExecuteGetRequestAsync<PaginatedJikanResponse<ICollection<Review>>>(endpointParts, cancellationToken);
 		}
 		

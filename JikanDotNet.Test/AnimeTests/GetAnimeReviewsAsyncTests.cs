@@ -56,7 +56,7 @@ namespace JikanDotNet.Tests.AnimeTests
 		public async Task GetAnimeReviewsAsync_SecondPageWithInvalidId_ShouldThrowValidationException(long malId)
 		{
 			// When
-			var func = _jikan.Awaiting(x => x.GetAnimeReviewsAsync(malId, 2));
+			var func = _jikan.Awaiting(x => x.GetAnimeReviewsAsync(malId, new ReviewsSearchConfig { Page = 2 }));
 
 			// Then
 			await func.Should().ThrowExactlyAsync<JikanValidationException>();
@@ -69,7 +69,7 @@ namespace JikanDotNet.Tests.AnimeTests
 		public async Task GetAnimeReviewsAsync_CorrectIdWrongPage_ShouldThrowValidationException(int page)
 		{
 			// When
-			var func = _jikan.Awaiting(x => x.GetAnimeReviewsAsync(1, page));
+			var func = _jikan.Awaiting(x => x.GetAnimeReviewsAsync(1, new ReviewsSearchConfig { Page = page }));
 
 			// Then
 			await func.Should().ThrowExactlyAsync<JikanValidationException>();
@@ -79,7 +79,7 @@ namespace JikanDotNet.Tests.AnimeTests
 		public async Task GetAnimeReviewsAsync_BebopIdSecondPage_ShouldParseCowboyBebopReviewsPaged()
 		{
 			// When
-			var bebop = await _jikan.GetAnimeReviewsAsync(1, 2);
+			var bebop = await _jikan.GetAnimeReviewsAsync(1, new ReviewsSearchConfig { Page = 2 });
 
 			// Then
 			var firstReview = bebop.Data.First();

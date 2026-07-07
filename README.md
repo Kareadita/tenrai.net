@@ -1,8 +1,15 @@
  [![Discord Server](https://img.shields.io/discord/460491088004907029.svg?style=flat&logo=discord)](https://discord.gg/4tvCr36) ![build status](https://img.shields.io/nuget/v/JikanDotNet.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GitHub issues open](https://img.shields.io/github/issues/Ervie/jikan.net.svg?maxAge=2592000)]() 
 
-# jikan.net
+# tenrai.net
 
-Jikan.net is a .NET wrapper for [Jikan](https://jikan.moe) RESTful API for parsing data from [MyAnimeList](https://myanimelist.com). Main objective of the wrapper is to simplify utilization of Jikan API, as strongly typed languages are not-so-easy to use with elastic json (sure we can go use dynamics in .NET, but let's think about performance).
+Tenrai.net is a .NET wrapper for [Tenrai](https://tenrai.org) RESTful API for parsing data from [MyAnimeList](https://myanimelist.com). Main objective of the wrapper is to simplify utilization of Tenrai API, as strongly typed languages are not-so-easy to use with elastic json (sure we can go use dynamics in .NET, but let's think about performance).
+
+Massive thanks to @Ervie who wrote the Jikan.NET library this is based from (https://github.com/Ervie/jikan.net).
+
+
+### Differences to Jikan.NET
+- Note all APIs are supported by Tenrai. I have left the methods but they will throw a NotImplemented exception
+- Introduced the ability to attach a server key for enhanced rate
 
 ### Main attributes
 

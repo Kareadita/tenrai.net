@@ -23,7 +23,7 @@ namespace JikanDotNet.Tests.TopTests
 		public async Task GetTopReviewsAsync_InvalidPage_ShouldThrowValidationException(int page)
 		{
 			// When
-			var func = _jikan.Awaiting(x => x.GetTopReviewsAsync(page));
+			var func = _jikan.Awaiting(x => x.GetTopReviewsAsync(new ReviewsSearchConfig { Page = page }));
 
 			// Then
 			await func.Should().ThrowExactlyAsync<JikanValidationException>();
@@ -37,7 +37,7 @@ namespace JikanDotNet.Tests.TopTests
 
 			// Then
 			using var _ = new AssertionScope();
-			reviews.Data.Count.Should().Be(50);
+			reviews.Data.Count.Should().Be(25);
 			reviews.Pagination.HasNextPage.Should().BeTrue();
 		}
 
@@ -45,11 +45,11 @@ namespace JikanDotNet.Tests.TopTests
 		public async Task GetTopReviewsAsync_sECONDpAGE_ShouldParseTopReviewsSecondPage()
 		{
 			// When
-			var reviews = await _jikan.GetTopReviewsAsync(2);
+			var reviews = await _jikan.GetTopReviewsAsync(new ReviewsSearchConfig { Page = 2 });
 
 			// Then
 			using var _ = new AssertionScope();
-			reviews.Data.Count.Should().Be(50);
+			reviews.Data.Count.Should().Be(25);
 			reviews.Pagination.HasNextPage.Should().BeTrue();
 		}
 	}

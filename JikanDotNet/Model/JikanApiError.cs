@@ -32,5 +32,11 @@ namespace JikanDotNet
 		/// </summary>
 		[JsonPropertyName("error")]
 		public string Error { get; set; }
+
+		/// <summary>
+		/// Request path that produced the error.
+		/// </summary>
+		[JsonPropertyName("path")]
+		public string Path { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System;
 
 namespace JikanDotNet
@@ -73,5 +74,17 @@ namespace JikanDotNet
 		/// </summary>
 		[JsonPropertyName("is_spoiler")]
 		public bool IsSpoiler { get; set; }
+
+		/// <summary>
+		/// If the review is preliminary (written before the entry finished airing/publishing).
+		/// </summary>
+		[JsonPropertyName("is_preliminary")]
+		public bool IsPreliminary { get; set; }
+
+		/// <summary>
+		/// Sentiment tags associated with the review (e.g. "Recommended", "Mixed Feelings", "Not Recommended").
+		/// </summary>
+		[JsonPropertyName("tags")]
+		public ICollection<string> Tags { get; set; }
 	}
 }

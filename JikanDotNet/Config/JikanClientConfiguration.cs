@@ -13,6 +13,13 @@ namespace JikanDotNet.Config
 		public bool SuppressException { get; set; }
 
 		/// <summary>
+		/// Optional Tenrai Server Key. When set, it is sent as the <c>X-Server-Key</c> header to raise
+		/// the rate limits (300/min, 5/sec, unlimited daily). If <see cref="LimiterConfigurations"/> is
+		/// left at its default, the client automatically switches to the Server Key limiter tier.
+		/// </summary>
+		public string ServerKey { get; set; }
+
+		/// <summary>
 		/// Configuration of the API limiter
 		/// </summary>
 		public List<TaskLimiterConfiguration> LimiterConfigurations { get; set; }

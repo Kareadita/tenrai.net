@@ -47,13 +47,27 @@ namespace JikanDotNet.Tests.MangaTests
 		}
 
 		[Fact]
-		public async Task GetMangaReviewsAsync_BerserkIdWithoutPreliminary_ShouldReturnEmpty()
+		public async Task GetMangaReviewsAsync_ExcludePreliminary_ShouldReturnNoPreliminaryReviews()
 		{
 			// When
-			var berserk = await _jikan.GetMangaReviewsAsync(2, includePreliminary: false);
+			var berserk = await _jikan.GetMangaReviewsAsync(2, new ReviewsSearchConfig { Preliminary = ReviewFilter.Exclude });
 
 			// Then
-			berserk.Data.Should().BeEmpty();
+			using (new AssertionScope())
+			{
+				berserk.Data.Should().NotBeEmpty();
+				berserk.Data.Should().OnlyContain(x => !x.IsPreliminary);
+			}
+		}
+
+		[Fact]
+		public async Task GetMangaReviewsAsync_OnlyPreliminary_ShouldNeverReturnNonPreliminaryReviews()
+		{
+			// When
+			var berserk = await _jikan.GetMangaReviewsAsync(2, new ReviewsSearchConfig { Preliminary = ReviewFilter.Only });
+
+			// Then (manga preliminary reviews are rare, so the set may be empty; none may be non-preliminary)
+			berserk.Data.All(x => x.IsPreliminary).Should().BeTrue();
 		}
 
 		[Theory]
@@ -63,7 +77,7 @@ namespace JikanDotNet.Tests.MangaTests
 		public async Task GetMangaReviewsAsync_SecondPageWithInvalidId_ShouldThrowValidationException(long malId)
 		{
 			// When
-			var func = _jikan.Awaiting(x => x.GetMangaReviewsAsync(malId, 2));
+			var func = _jikan.Awaiting(x => x.GetMangaReviewsAsync(malId, new ReviewsSearchConfig { Page = 2 }));
 
 			// Then
 			await func.Should().ThrowExactlyAsync<JikanValidationException>();
@@ -76,7 +90,7 @@ namespace JikanDotNet.Tests.MangaTests
 		public async Task GetMangaReviewsAsync_CorrectIdWrongPage_ShouldThrowValidationException(int page)
 		{
 			// When
-			var func = _jikan.Awaiting(x => x.GetMangaReviewsAsync(1, page));
+			var func = _jikan.Awaiting(x => x.GetMangaReviewsAsync(1, new ReviewsSearchConfig { Page = page }));
 
 			// Then
 			await func.Should().ThrowExactlyAsync<JikanValidationException>();
@@ -86,12 +100,51 @@ namespace JikanDotNet.Tests.MangaTests
 		public async Task GetMangaReviewsAsync_BerserkIdSecondPage_ShouldParseBerserkReviewsSecondPage()
 		{
 			// When
-			var berserk = await _jikan.GetMangaReviewsAsync(2, 2);
+			var berserk = await _jikan.GetMangaReviewsAsync(2, new ReviewsSearchConfig { Page = 2 });
 
 			// Then
 			using (new AssertionScope())
 			{
 				berserk.Data.First().Reactions.TotalReactions.Should().BeGreaterThan(1);
+			}
+		}
+
+		[Fact]
+		public async Task GetMangaReviewsAsync_RecommendedSentimentNewestSort_ShouldReturnRecommendedReviews()
+		{
+			// Given
+			var config = new ReviewsSearchConfig
+			{
+				Sort = ReviewSortOrder.Newest,
+				Sentiment = ReviewSentiment.Recommended
+			};
+
+			// When
+			var berserk = await _jikan.GetMangaReviewsAsync(2, config);
+
+			// Then
+			using (new AssertionScope())
+			{
+				berserk.Data.Should().NotBeEmpty();
+				berserk.Data.Should().OnlyContain(x => x.Tags.Contains("Recommended"));
+				berserk.Pagination.LastVisiblePage.Should().BeGreaterThan(0);
+			}
+		}
+
+		[Fact]
+		public async Task GetMangaReviewsAsync_SpoilersOnly_ShouldReturnOnlySpoilerReviews()
+		{
+			// Given
+			var config = new ReviewsSearchConfig { Spoilers = ReviewFilter.Only };
+
+			// When
+			var berserk = await _jikan.GetMangaReviewsAsync(2, config);
+
+			// Then
+			using (new AssertionScope())
+			{
+				berserk.Data.Should().NotBeEmpty();
+				berserk.Data.Should().OnlyContain(x => x.IsSpoiler);
 			}
 		}
 	}

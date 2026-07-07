@@ -23,7 +23,7 @@ public class GetRecentMangaReviewsAsyncTests
     public async Task GetRecentMangaReviewsAsync_InvalidPage_ShouldThrowValidationException(int page)
     {
         // When
-        var func = _jikan.Awaiting(x => x.GetRecentMangaReviewsAsync(page));
+        var func = _jikan.Awaiting(x => x.GetRecentMangaReviewsAsync(new ReviewsSearchConfig { Page = page }));
 
         // Then
         await func.Should().ThrowExactlyAsync<JikanValidationException>();
@@ -46,7 +46,7 @@ public class GetRecentMangaReviewsAsyncTests
     public async Task GetRecentMangaReviewsAsync_FirstPage_ShouldParseFirstPageReviews()
     {
         // When
-        var reviews = await _jikan.GetRecentMangaReviewsAsync(1);
+        var reviews = await _jikan.GetRecentMangaReviewsAsync(new ReviewsSearchConfig { Page = 1 });
 
         // Then
         using var _ = new AssertionScope();
@@ -59,7 +59,7 @@ public class GetRecentMangaReviewsAsyncTests
     public async Task GetRecentMangaReviewsAsync_SecondPage_ShouldParseSecondPageReviews()
     {
         // When
-        var reviews = await _jikan.GetRecentMangaReviewsAsync(2);
+        var reviews = await _jikan.GetRecentMangaReviewsAsync(new ReviewsSearchConfig { Page = 2 });
 
         // Then
         using var _ = new AssertionScope();
