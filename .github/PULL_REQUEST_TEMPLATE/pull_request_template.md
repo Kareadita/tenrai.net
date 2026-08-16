@@ -1,1 +1,1 @@
-Ensure if merging into `master`, you have (version number) to trigger pipeline
+Ensure if merging into `master`, you have (version number) in the PR Title to trigger pipeline
