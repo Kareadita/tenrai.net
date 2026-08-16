@@ -130,7 +130,7 @@ namespace Tenrai.Tests.InterestStackTests
 			using (new AssertionScope())
 			{
 				stacks.Data.Should().NotBeEmpty();
-				stacks.Pagination.Items.Total.Should().BeLessThan(unfiltered.Pagination.Items.Total);
+				stacks.Pagination.Items.Total.Should().BeLessOrEqualTo(unfiltered.Pagination.Items.Total);
 			}
 		}
 

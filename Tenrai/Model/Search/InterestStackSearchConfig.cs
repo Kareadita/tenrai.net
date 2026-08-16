@@ -12,7 +12,7 @@ namespace Tenrai
 	public class InterestStackSearchConfig : ISearchConfig
 	{
 		/// <summary>
-		/// Index of page folding 25 records of top ranging (e.g. 1 will return first 25 records, 2 will return record from 26 to 50 etc.)
+		/// 1-based page index (e.g. 1 returns the first page, 2 the second).
 		/// </summary>
 		public int? Page { get; set; }
 
