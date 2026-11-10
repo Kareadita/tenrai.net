@@ -7,6 +7,7 @@ using Xunit;
 namespace Tenrai.Tests.StatusTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetStatusAsyncTests
 {
 	private readonly ITenrai _tenrai;

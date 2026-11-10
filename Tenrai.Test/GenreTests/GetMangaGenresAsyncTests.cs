@@ -6,6 +6,7 @@ using Xunit;
 namespace Tenrai.Tests.GenreTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetMangaGenresAsyncTests
 {
 	private readonly ITenrai _tenrai;

@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.NewsTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class NewsTests
 {
 	private readonly ITenrai _tenrai;

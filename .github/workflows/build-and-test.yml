@@ -1,0 +1,58 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches: [ '**' ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Install dependencies
+        run: dotnet restore Tenrai.slnx
+
+      - name: Build
+        run: dotnet build Tenrai.slnx --no-restore
+
+      - name: Test
+        run: dotnet test Tenrai.Test/Tenrai.Tests.csproj --no-build --verbosity normal --filter "Category!=Integration"
+
+  live-api-tests:
+    name: Live API Tests
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Install dependencies
+        run: dotnet restore Tenrai.slnx
+
+      - name: Build
+        run: dotnet build Tenrai.slnx --no-restore
+
+      - name: Test
+        run: dotnet test Tenrai.Test/Tenrai.Tests.csproj --no-build --verbosity normal --filter "Category=Integration"

@@ -7,6 +7,7 @@ using Xunit;
 namespace Tenrai.Tests.MangaTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetMangaStatisticsAsyncTests
 {
 	private readonly ITenrai _tenrai;

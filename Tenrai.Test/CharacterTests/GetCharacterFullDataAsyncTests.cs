@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.CharacterTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetCharacterFullDataAsyncTests
 {
 	private readonly ITenrai _tenrai;

@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.CatalogueTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class StatisticsHistoryTests
 {
 	private readonly ITenrai _tenrai;

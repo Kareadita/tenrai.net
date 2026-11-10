@@ -9,6 +9,7 @@ using Xunit;
 namespace Tenrai.Tests.SeasonTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetSeasonAsyncTests
 {
 	private readonly ITenrai _tenrai;

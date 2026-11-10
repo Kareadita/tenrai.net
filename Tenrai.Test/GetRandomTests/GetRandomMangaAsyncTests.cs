@@ -5,6 +5,7 @@ using Xunit;
 namespace Tenrai.Tests.GetRandomTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetRandomMangaAsyncTests
 {
 	private readonly ITenrai _tenrai;

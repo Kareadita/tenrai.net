@@ -11,6 +11,7 @@ using Xunit;
 namespace Tenrai.Tests.IdsTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetIdsAsyncTests
 {
 	private readonly ITenrai _tenrai;

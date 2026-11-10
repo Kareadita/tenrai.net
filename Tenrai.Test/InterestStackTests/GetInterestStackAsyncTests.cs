@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.InterestStackTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetInterestStackAsyncTests
 {
 	private readonly ITenrai _tenrai;

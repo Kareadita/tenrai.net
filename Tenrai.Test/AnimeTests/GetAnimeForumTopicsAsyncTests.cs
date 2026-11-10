@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.AnimeTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetAnimeForumTopicsAsyncTests
 {
 	private readonly ITenrai _tenrai;

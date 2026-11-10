@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.MagazineTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetMagazinesAsyncTests
 {
 	private readonly ITenrai _tenrai;

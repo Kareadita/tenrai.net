@@ -7,6 +7,7 @@ using Xunit;
 namespace Tenrai.Tests.PersonTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetPersonAnimeAsyncTests
 {
 	private readonly ITenrai _tenrai;

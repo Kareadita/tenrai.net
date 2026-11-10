@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.TopTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetTopAnimeAsyncTests
 {
 	private readonly ITenrai _tenrai;

@@ -10,6 +10,7 @@ using Xunit;
 namespace Tenrai.Tests.AnimeTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetAnimeFullDataAsyncTests
 {
 	private readonly ITenrai _tenrai;

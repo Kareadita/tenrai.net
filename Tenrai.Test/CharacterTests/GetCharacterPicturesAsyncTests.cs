@@ -7,6 +7,7 @@ using Xunit;
 namespace Tenrai.Tests.CharacterTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetCharacterPicturesAsyncTests
 {
 	private readonly ITenrai _tenrai;

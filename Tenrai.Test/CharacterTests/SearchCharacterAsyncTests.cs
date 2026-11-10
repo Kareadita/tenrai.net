@@ -10,6 +10,7 @@ using Xunit;
 namespace Tenrai.Tests.CharacterTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class SearchCharacterAsyncTests
 {
 	private readonly ITenrai _tenrai;

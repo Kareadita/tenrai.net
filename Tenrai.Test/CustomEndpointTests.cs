@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Tenrai.Tests;
 
+[Trait("Category", "Integration")]
 public class CustomEndpointTests
 {
 	[Fact]

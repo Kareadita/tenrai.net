@@ -6,6 +6,7 @@ using Xunit;
 namespace Tenrai.Tests.ArticleTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class ArticleTests
 {
 	private readonly ITenrai _tenrai;

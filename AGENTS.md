@@ -54,3 +54,11 @@ dotnet test Tenrai.Test/Tenrai.Tests.csproj --filter FullyQualifiedName~GetAnime
 ```
 
 Before relying on full test results, remember that many tests hit the live Tenrai API and can fail because of network, upstream data, or rate limiting rather than local code.
+
+Test classes that call the live API carry `[Trait("Category", "Integration")]` next to `[Collection("TenraiTests")]`; give a new live test class both. Pull requests run only the offline tests (`.github/workflows/build-and-test.yml`):
+
+```bash
+dotnet test Tenrai.Test/Tenrai.Tests.csproj --filter "Category!=Integration"
+```
+
+The live suite runs on demand from the same workflow (Run workflow), or locally with `--filter "Category=Integration"`.

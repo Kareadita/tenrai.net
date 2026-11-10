@@ -7,6 +7,7 @@ using Xunit;
 namespace Tenrai.Tests.ProducerTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetProducerFullDataAsyncTests
 {
 	private readonly ITenrai _tenrai;

@@ -8,6 +8,7 @@ using Xunit;
 namespace Tenrai.Tests.ScheduleTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetScheduleAsyncTests
 {
 	private readonly ITenrai _tenrai;

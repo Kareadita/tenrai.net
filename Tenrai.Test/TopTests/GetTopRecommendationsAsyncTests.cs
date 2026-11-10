@@ -7,6 +7,7 @@ using Xunit;
 namespace Tenrai.Tests.TopTests;
 
 [Collection("TenraiTests")]
+[Trait("Category", "Integration")]
 public class GetTopRecommendationsAsyncTests
 {
 	private readonly ITenrai _tenrai;
