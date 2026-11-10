@@ -108,3 +108,6 @@ Then restore dependencies:
 # Documentation & Usage example
 
 See the [documentation](docs/README.md) for quick start, API reference, and guides.
+
+# AI Usage
+I am using AI to help port the spec to the library. All code is reviewed and before all releases, validated in Kavita+.

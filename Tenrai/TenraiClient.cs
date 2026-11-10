@@ -91,9 +91,9 @@ public partial class TenraiClient : ITenrai
 			}
 			else if (!_tenraiConfiguration.SuppressException)
 			{
-				var json = await response.Content.ReadAsStringAsync();
-				var errorData = JsonSerializer.Deserialize<TenraiApiError>(json);
-				throw new TenraiRequestException(string.Format(ErrorMessagesConst.FailedRequest, response.StatusCode, response.Content), errorData);
+				var body = await response.Content.ReadAsStringAsync();
+				var errorData = TryParseApiError(body);
+				throw new TenraiRequestException(string.Format(ErrorMessagesConst.FailedRequest, response.StatusCode, errorData?.Message ?? body), errorData);
 			}
 		}
 		catch (JsonException ex)
@@ -101,6 +101,18 @@ public partial class TenraiClient : ITenrai
 			if (!_tenraiConfiguration.SuppressException) throw new TenraiRequestException(ErrorMessagesConst.SerializationFailed + Environment.NewLine + "Inner exception message: " + ex.Message, ex);
 		}
 		return returnedObject;
+	}
+
+	private static TenraiApiError TryParseApiError(string body)
+	{
+		try
+		{
+			return JsonSerializer.Deserialize<TenraiApiError>(body);
+		}
+		catch (JsonException)
+		{
+			return null;
+		}
 	}
 
 	private async Task<PaginatedTenraiResponse<ICollection<News>>> GetEntityNewsAsync(string entity, long id, NewsFilterConfig filterConfig, CancellationToken cancellationToken)
