@@ -10,7 +10,5 @@ BuildLibrary:
 PublishToNuGet:
   OutputDirectory: "artifacts"
 
-# Only release/ branches: a second release for an unchanged version fails on the existing tag
 CreateGitHubRelease:
-  ReleaseTypes: [Stable]
   AssetPath: "artifacts"

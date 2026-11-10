@@ -19,7 +19,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v7
 
+      # ReleaseTools creates the GitHub release without checking for an existing one, so an unbumped version fails the run
+      - name: Check for a new version
+        id: version
+        run: |
+          version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' Tenrai/Tenrai.csproj)
+          if git ls-remote --exit-code --tags origin "refs/tags/v$version" > /dev/null; then
+            echo "v$version is already released, skipping"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Find current Pull Request
+        if: steps.version.outputs.new == 'true'
         uses: jwalton/gh-find-current-pr@f3d61b485d2801773f7a07b2aaa3306bd8f8e653 # v1.3.5
         id: findPr
         with:
