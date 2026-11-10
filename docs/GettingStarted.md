@@ -101,7 +101,7 @@ var httpClient = new HttpClient
 var tenrai = new TenraiClient(new TenraiClientConfiguration(), httpClient);
 ```
 
-Use a trailing slash on `BaseAddress` so relative request paths resolve correctly. Note that when you supply your own `HttpClient`, you are responsible for adding the `X-Server-Key` header yourself.
+Use a trailing slash on `BaseAddress` so relative request paths resolve correctly. `ServerKey` works with your own `HttpClient` too: the client adds the `X-Server-Key` header to it, unless the `HttpClient` already carries one.
 
 `GetStatusAsync` is unaffected by `BaseAddress`. It requests the absolute URL `https://tenrai.org/status/api/status`, because the status service is hosted separately from the API, so pointing the client at a different base address does not redirect it.
 

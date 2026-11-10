@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -23,16 +24,17 @@ public sealed class StubHttpMessageHandler : HttpMessageHandler
 
 	public int RequestCount { get; private set; }
 
-	public TenraiClient CreateClient(TenraiClientConfiguration configuration)
-	{
-		var httpClient = new HttpClient(this) { BaseAddress = new Uri("https://api.tenrai.org/v1/") };
-		return new TenraiClient(configuration, httpClient);
-	}
+	public string[] LastServerKeys { get; private set; }
+
+	public TenraiClient CreateClient(TenraiClientConfiguration configuration) => new(configuration, CreateHttpClient());
+
+	public HttpClient CreateHttpClient() => new(this) { BaseAddress = new Uri("https://api.tenrai.org/v1/") };
 
 	protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 	{
 		RequestCount++;
 		LastQuery = request.RequestUri.Query;
+		LastServerKeys = request.Headers.TryGetValues("X-Server-Key", out var keys) ? keys.ToArray() : Array.Empty<string>();
 		return Task.FromResult(new HttpResponseMessage(StatusCode) { Content = new StringContent(Body, Encoding.UTF8, "application/json") });
 	}
 }

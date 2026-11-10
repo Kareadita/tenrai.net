@@ -48,7 +48,8 @@ public partial class TenraiClient : ITenrai
 	{
 		_tenraiConfiguration = tenraiClientConfiguration;
 		_limiter = new CompositeTaskLimiter(ResolveLimiterConfigurations(tenraiClientConfiguration).Distinct());
-		_httpClient = httpClient ?? DefaultHttpClientProvider.GetDefaultHttpClient(serverKey: tenraiClientConfiguration.ServerKey);
+		_httpClient = httpClient ?? DefaultHttpClientProvider.GetDefaultHttpClient();
+		DefaultHttpClientProvider.AddServerKey(_httpClient, tenraiClientConfiguration.ServerKey);
 	}
 
 	/// <summary>

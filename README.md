@@ -78,6 +78,10 @@ Then restore dependencies:
 
 # Changelog
 
+## 10.11.2026 - Version 4.0.1
+
+- Fixed `ServerKey` being ignored when you pass your own `HttpClient`: the `X-Server-Key` header is now added to it
+
 ## 10.11.2026 - Version 4.0.0
 
 - Up to the Tenrai spec 1.0.30, major, breaking release: see [Migrating from 3.x to 4.0](docs/Migrating-from-3.x-to-4.0.md) and the [full changelog](Changelog.md)
