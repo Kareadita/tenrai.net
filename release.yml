@@ -3,15 +3,6 @@
 CsprojPath: "Tenrai/Tenrai.csproj"
 VersionXmlElement: "Version"
 
-ParseReleaseTypes:
-  BranchRequirements:
-    Stable:
-      StartWiths: "release/"
-      DoesNotContain: []
-    Nightly:
-      StartWiths: ""
-      DoesNotContain: ["release/"]
-
 BuildLibrary:
   CsprojPath: "Tenrai/Tenrai.csproj"
   OutputDirectory: "artifacts"
