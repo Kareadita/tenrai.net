@@ -24,11 +24,11 @@ public class UserFavorites
 	/// User's favorite characters.
 	/// </summary>
 	[JsonPropertyName("characters")]
-	public ICollection<MalImageSubItem> Characters { get; set; }
+	public ICollection<CharacterEntry> Characters { get; set; }
 
 	/// <summary>
 	/// User's favorite people.
 	/// </summary>
 	[JsonPropertyName("people")]
-	public ICollection<MalImageSubItem> People { get; set; }
+	public ICollection<PersonEntry> People { get; set; }
 }

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Tenrai;
 
 /// <summary>
-/// Model class for anime/manga staff position.
+/// Character listed on an anime or manga, in a person's voice roles, or in a user's favorites.
 /// </summary>
 public class CharacterEntry
 {
@@ -18,6 +18,12 @@ public class CharacterEntry
 	/// </summary>
 	[JsonPropertyName("name")]
 	public string Name { get; set; }
+
+	/// <summary>
+	/// <see cref="Name"/> split into given and family name.
+	/// </summary>
+	[JsonIgnore]
+	public EntityName ParsedName => EntityName.Parse(Name);
 
 	/// <summary>
 	/// Url to character's main page.

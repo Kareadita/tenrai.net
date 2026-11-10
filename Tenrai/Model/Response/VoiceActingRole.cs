@@ -17,7 +17,7 @@ public class VoiceActingRole
 	/// Character associated with voice acting role.
 	/// </summary>
 	[JsonPropertyName("character")]
-	public MalImageSubItem Character { get; set; }
+	public CharacterEntry Character { get; set; }
 
 	/// <summary>
 	/// Status of the role: Main/Supporting.

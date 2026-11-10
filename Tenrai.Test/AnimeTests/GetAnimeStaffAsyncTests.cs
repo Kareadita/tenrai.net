@@ -52,8 +52,9 @@ public class GetAnimeStaffAsyncTests
 		{
 			shinichiroWatanabe.Position.Should().HaveCount(4);
 			shinichiroWatanabe.Position.Should().Contain("Director");
-			shinichiroWatanabe.Position.Should().Contain("Script");
-			shinichiroWatanabe.Person.Name.Should().Be("Watanabe, Shinichiro");
+			shinichiroWatanabe.Position.Should().Contain(x => x.StartsWith("Script"));
+			shinichiroWatanabe.Person.ParsedName.FirstName.Should().Be("Shinichirou");
+			shinichiroWatanabe.Person.ParsedName.LastName.Should().Be("Watanabe");
 			shinichiroWatanabe.Person.MalId.Should().Be(2009);
 		}
 	}
@@ -65,7 +66,7 @@ public class GetAnimeStaffAsyncTests
 		var bebop = await _tenrai.GetAnimeStaffAsync(1);
 
 		// Then
-		var shinichiroWatanabe = bebop.Data.First(x => x.Person.Name.Equals("Watanabe, Shinichiro"));
+		var shinichiroWatanabe = bebop.Data.First(x => x.Person.MalId == 2009);
 		shinichiroWatanabe.Person.Images.JPG.ImageUrl.Should().NotBeNullOrEmpty();
 	}
 }

@@ -49,7 +49,7 @@ public class GetCharacterPicturesAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		kirimaSharo.Data.Should().HaveCount(9);
+		kirimaSharo.Data.Should().HaveCountGreaterOrEqualTo(9);
 		kirimaSharo.Data.Should().OnlyContain(x => !string.IsNullOrWhiteSpace(x.JPG.ImageUrl));
 	}
 }

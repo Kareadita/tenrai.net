@@ -28,7 +28,7 @@ public class GetSeasonArchiveAsyncTests
 		using (new AssertionScope())
 		{
 			oldestSeason.Year.Should().Be(1917);
-			oldestSeason.Season.Should().HaveCount(4);
+			oldestSeason.Season.Should().Contain(Season.Fall);
 		}
 	}
 

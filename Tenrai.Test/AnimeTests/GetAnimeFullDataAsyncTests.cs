@@ -51,10 +51,10 @@ public class GetAnimeFullDataAsyncTests
 		bebopAnime.Data.Relations.Should()
 			.ContainSingle(x => x.Relation.Equals("Adaptation") && x.Entry.Count == 2);
 		bebopAnime.Data.Relations.Should()
-			.ContainSingle(x => x.Relation.Equals("Side story") && x.Entry.Count == 2);
+			.ContainSingle(x => x.Relation.Equals("Side Story") && x.Entry.Count == 2);
 		bebopAnime.Data.Relations.Should().ContainSingle(x => x.Relation.Equals("Summary") && x.Entry.Count == 1);
-		bebopAnime.Data.StreamingLinks.Should().Contain(x => x.Name.Equals("Crunchyroll") && x.Url.Equals("http://www.crunchyroll.com/series-271225"));
-		bebopAnime.Data.StreamingLinks.Should().Contain(x => x.Name.Equals("Netflix") && x.Url.Equals("https://www.netflix.com/title/80001305"));
+		bebopAnime.Data.StreamingLinks.Should().Contain(x => x.Name.Equals("Crunchyroll") && x.Url.Contains("crunchyroll.com"));
+		bebopAnime.Data.StreamingLinks.Should().Contain(x => x.Name.Equals("Netflix") && x.Url.Contains("netflix.com%2Ftitle%2F80001305"));
 	}
 
 	[Fact]

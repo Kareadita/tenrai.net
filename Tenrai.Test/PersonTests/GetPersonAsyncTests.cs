@@ -64,7 +64,7 @@ public class GetPersonAsyncTests
 		// Then
 		using (new AssertionScope())
 		{
-			norioWakamoto.Data.Name.Should().Be("Norio Wakamoto");
+			norioWakamoto.Data.Name.Should().Be("Wakamoto, Norio");
 			norioWakamoto.Data.Birthday.Value.Year.Should().Be(1945);
 		}
 	}

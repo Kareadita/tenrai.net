@@ -762,7 +762,8 @@ Returns character with given MAL id.
 
 ```csharp
 var character = await tenrai.GetCharacterAsync(2219);
-Console.WriteLine(character.Data.Name);
+Console.WriteLine(character.Data.Name);                  // "Iwakura, Lain"
+Console.WriteLine(character.Data.ParsedName.FullName);   // "Lain Iwakura"
 Console.WriteLine(character.Data.About);
 ```
 

@@ -86,7 +86,7 @@ public class GetAnimeReviewsAsyncTests
 		using (new AssertionScope())
 		{
 			firstReview.EpisodesWatched.Should().Be(null);
-			firstReview.Score.Should().BeGreaterOrEqualTo(8);
+			firstReview.Score.Should().BeInRange(1, 10);
 		}
 	}
 

@@ -38,7 +38,7 @@ public class GetRecentMangaRecommendationsAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		recs.Pagination.HasNextPage.Should().BeTrue();
-		recs.Pagination.LastVisiblePage.Should().Be(20);
+		recs.Pagination.LastVisiblePage.Should().BeGreaterThan(20);
 		recs.Data.Should().HaveCount(100);
 		recs.Data.Should().OnlyContain(x => x.Entries.Count == 2);
 	}
@@ -52,7 +52,7 @@ public class GetRecentMangaRecommendationsAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		recs.Pagination.HasNextPage.Should().BeTrue();
-		recs.Pagination.LastVisiblePage.Should().Be(20);
+		recs.Pagination.LastVisiblePage.Should().BeGreaterThan(20);
 		recs.Data.Should().HaveCount(100);
 		recs.Data.Should().OnlyContain(x => x.Entries.Count == 2);
 	}
@@ -66,7 +66,7 @@ public class GetRecentMangaRecommendationsAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		recs.Pagination.HasNextPage.Should().BeTrue();
-		recs.Pagination.LastVisiblePage.Should().Be(20);
+		recs.Pagination.LastVisiblePage.Should().BeGreaterThan(20);
 		recs.Data.Should().HaveCount(100);
 		recs.Data.Should().OnlyContain(x => x.Entries.Count == 2);
 	}

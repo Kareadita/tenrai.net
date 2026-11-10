@@ -33,12 +33,22 @@ public class GetMangaRelationsAsyncTests
 	public async Task GetMangaRelationsAsync_MonsterId_ShouldParseMonsterRelations()
 	{
 		// When
-		var monster = await _tenrai.GetMangaRelationsAsync(1);
+		var monster = await _tenrai.GetMangaRelationsAsync(1, new SfwConfig { Sfw = false });
 
 		// Then
 		using var _ = new AssertionScope();
 		monster.Data.Should().HaveCount(2);
 		monster.Data.Should().ContainSingle(x => x.Relation.Equals("Adaptation") && x.Entry.Count == 1);
 		monster.Data.Should().ContainSingle(x => x.Relation.Equals("Side Story") && x.Entry.Count == 1);
+	}
+
+	[Fact]
+	public async Task GetMangaRelationsAsync_MonsterIdDefaultClient_ShouldLeaveOutAdultAdaptation()
+	{
+		// When
+		var monster = await _tenrai.GetMangaRelationsAsync(1);
+
+		// Then
+		monster.Data.Should().ContainSingle().Which.Relation.Should().Be("Side Story");
 	}
 }

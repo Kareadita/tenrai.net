@@ -31,7 +31,7 @@ public class SearchPersonAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
-		people.Data.First().Name.Should().Be("Tomokazu Seki");
+		people.Data.First().Name.Should().Be("Seki, Tomokazu");
 		people.Pagination.LastVisiblePage.Should().BeGreaterThan(370);
 		people.Pagination.CurrentPage.Should().Be(1);
 		people.Pagination.Items.Count.Should().Be(25);
@@ -84,7 +84,7 @@ public class SearchPersonAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
-		people.Data.First().Name.Should().Be("Travis Willingham");
+		people.Data.First().Name.Should().Be("Willingham, Travis");
 		people.Pagination.LastVisiblePage.Should().BeGreaterThan(370);
 		people.Pagination.CurrentPage.Should().Be(2);
 		people.Pagination.Items.Count.Should().Be(25);
@@ -104,7 +104,7 @@ public class SearchPersonAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().HaveCount(pageSize);
-		people.Data.First().Name.Should().Be("Tomokazu Seki");
+		people.Data.First().Name.Should().Be("Seki, Tomokazu");
 		people.Pagination.CurrentPage.Should().Be(1);
 		people.Pagination.Items.Count.Should().Be(pageSize);
 		people.Pagination.Items.PerPage.Should().Be(pageSize);
@@ -123,7 +123,7 @@ public class SearchPersonAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().HaveCount(pageSize);
-		people.Data.First().Name.Should().Be("Toshiyuki Morikawa");
+		people.Data.First().Name.Should().Be("Morikawa, Toshiyuki");
 		people.Pagination.CurrentPage.Should().Be(2);
 		people.Pagination.Items.Count.Should().Be(pageSize);
 		people.Pagination.Items.PerPage.Should().Be(pageSize);
@@ -176,9 +176,8 @@ public class SearchPersonAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		people.Data.Should().Contain(x => x.Name.Equals("Kana Hanazawa"));
-		people.Data.Should().Contain(x => x.Name.Equals("Kana Ueda"));
-		people.Data.Should().Contain(x => x.Name.Equals("Yukana"));
+		people.Data.Should().Contain(x => x.Name.Equals("Hanazawa, Kana"));
+		people.Data.Should().Contain(x => x.Name.Equals("Ueda, Kana"));
 	}
 
 	[Fact]
@@ -192,10 +191,9 @@ public class SearchPersonAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		people.Data.Should().Contain(x => x.Name.Equals("Kana Hanazawa"));
-		people.Data.Should().Contain(x => x.Name.Equals("Kana Ueda"));
-		people.Data.Should().Contain(x => x.Name.Equals("Yukana"));
-		people.Data.First().Name.Should().Be("Kana Hanazawa");
+		people.Data.Should().BeInDescendingOrder(x => x.MemberFavorites);
+		people.Data.Should().Contain(x => x.Name.Equals("Ueda, Kana"));
+		people.Data.First().Name.Should().Be("Hanazawa, Kana");
 	}
 
 	[Fact]
@@ -209,10 +207,9 @@ public class SearchPersonAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		people.Data.Should().NotContain(x => x.Name.Equals("Kana Hanazawa"));
-		people.Data.Should().NotContain(x => x.Name.Equals("Kana Ueda"));
-		people.Data.Should().NotContain(x => x.Name.Equals("Yukana"));
-		people.Data.Should().OnlyContain(x => x.Name.Contains("kana") || x.Name.Contains("Kana"));
+		people.Data.Should().BeInAscendingOrder(x => x.MemberFavorites);
+		people.Data.Should().NotContain(x => x.Name.Equals("Hanazawa, Kana"));
+		people.Data.Should().NotContain(x => x.Name.Equals("Ueda, Kana"));
 		people.Data.First().MemberFavorites.Should().Be(0);
 	}
 
@@ -228,8 +225,8 @@ public class SearchPersonAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().HaveCount(config.Limit.Value);
-		people.Data.Should().Contain(x => x.Name.Equals("Mika Kanai"));
-		people.Data.Should().Contain(x => x.Name.Equals("Kanako Sakai"));
+		people.Data.Should().Contain(x => x.Name.Equals("Kanai, Mika"));
+		people.Data.Should().Contain(x => x.Name.Equals("Sakai, Kanako"));
 	}
 
 	[Fact]
@@ -245,12 +242,12 @@ public class SearchPersonAsyncTests
 		using var _ = new AssertionScope();
 
 		var result = people.Data.First();
-		result.Name.Should().Be("Miyuki Sawashiro");
+		result.Name.Should().Be("Sawashiro, Miyuki");
 		result.GivenName.Should().Be("みゆき");
 		result.FamilyName.Should().Be("沢城");
-		result.Birthday.Should().BeSameDateAs(new DateTime(1985,6,2));
+		result.Birthday?.ToUniversalTime().Should().BeSameDateAs(new DateTime(1985,6,2));
 		result.MalId.Should().Be(99);
-		result.WebsiteUrl.Should().BeNull();
+		result.WebsiteUrl.Should().Be("http://www.aoni.co.jp/actress/sa/sawashiro-miyuki.html");
 	}
 
 	[Fact]

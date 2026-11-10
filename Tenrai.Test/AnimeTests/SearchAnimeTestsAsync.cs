@@ -66,7 +66,7 @@ public class SearchAnimeTestsAsync
 		// Then
 		using var _ = new AssertionScope();
 		anime.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
-		anime.Data.First().Title.Should().Be("Rurouni Kenshin: Meiji Kenkaku Romantan - Tsuioku-hen");
+		anime.Data.Should().BeInAscendingOrder(x => x.MalId);
 		anime.Pagination.LastVisiblePage.Should().BeGreaterThan(780);
 		anime.Pagination.CurrentPage.Should().Be(2);
 		anime.Pagination.Items.Count.Should().Be(25);
@@ -265,14 +265,13 @@ public class SearchAnimeTestsAsync
 		var returnedAnime = await _tenrai.SearchAnimeAsync(searchConfig);
 
 		// Then
-		var titles = returnedAnime.Data.Select(x => x.Title);
 		using var _ = new AssertionScope();
-		titles.Should().Contain("One Piece");
-		titles.First().Should().Be("One");
+		returnedAnime.Data.Should().BeInDescendingOrder(x => x.Members);
+		returnedAnime.Data.Select(x => x.Title).Should().Contain("One Piece");
 	}
 
 	[Fact]
-	public async Task SearchAnimeAsync_OneSortByIdConfig_ShouldSortByIdHachimitsuFirst()
+	public async Task SearchAnimeAsync_OneSortByIdConfig_ShouldSortById()
 	{
 		// Given
 		var searchConfig = new AnimeSearchConfig
@@ -286,7 +285,9 @@ public class SearchAnimeTestsAsync
 		var returnedAnime = await _tenrai.SearchAnimeAsync(searchConfig);
 
 		// Then
-		returnedAnime.Data.First().Title.Should().Be("One");
+		using var _ = new AssertionScope();
+		returnedAnime.Data.Should().BeInAscendingOrder(x => x.MalId);
+		returnedAnime.Data.First().Title.Should().Be("One Piece");
 	}
 
 	[Fact]
@@ -307,7 +308,7 @@ public class SearchAnimeTestsAsync
 	}
 
 	[Fact]
-	public async Task SearchAnimeAsync_IncorrectProducerConfig_ShouldReturnEmpty()
+	public async Task SearchAnimeAsync_IncorrectProducerConfig_ShouldThrowRequestException()
 	{
 		// Given
 		var searchConfig = new AnimeSearchConfig
@@ -316,10 +317,10 @@ public class SearchAnimeTestsAsync
 		};
 
 		// When
-		var returnedAnime = await _tenrai.SearchAnimeAsync(searchConfig);
+		var func = _tenrai.Awaiting(x => x.SearchAnimeAsync(searchConfig));
 
 		// Then
-		returnedAnime.Data.Should().BeEmpty();
+		await func.Should().ThrowExactlyAsync<TenraiRequestException>();
 	}
 
 	[Fact]
@@ -449,10 +450,11 @@ public class SearchAnimeTestsAsync
 		var returnedAnime = await _tenrai.SearchAnimeAsync(searchConfig);
 
 		// Then
-		var titles = returnedAnime.Data.Select(x => x.Title);
 		using var _ = new AssertionScope();
-		titles.Should().Contain("Elfen Lied");
-		titles.Should().Contain("Samurai Champloo");
+		returnedAnime.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
+		returnedAnime.Pagination.CurrentPage.Should().Be(3);
+		returnedAnime.Data.Should().OnlyContain(x => x.Type == "TV");
+		returnedAnime.Data.Should().OnlyContain(x => x.Genres.Any(g => g.Name == "Action"));
 	}
 
 	[Theory]

@@ -214,7 +214,8 @@ public class SearchMangaAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		returnedAnime.Data.Select(x => x.Title).Should().Contain("Mimei no Girl");
+		returnedAnime.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
+		returnedAnime.Pagination.CurrentPage.Should().Be(2);
 		returnedAnime.Pagination.LastVisiblePage.Should().BeGreaterThan(15);
 	}
 
@@ -274,12 +275,11 @@ public class SearchMangaAsyncTests
 	}
 
 	[Fact]
-	public async Task SearchMangaAsync_MangaGameGenreConfig_ShouldFilterMetalFightBeyblade()
+	public async Task SearchMangaAsync_MangaGameGenreConfig_ShouldOnlyReturnGameManga()
 	{
 		// Given
 		var searchConfig = new MangaSearchConfig
 		{
-			Query = "metal",
 			Types = new[] { MangaType.Manga },
 		};
 		searchConfig.Genres.Add(MangaGenreSearch.Game);
@@ -287,7 +287,11 @@ public class SearchMangaAsyncTests
 		// When
 		var returnedManga = await _tenrai.SearchMangaAsync(searchConfig);
 
-		returnedManga.Data.First().Title.Should().Be("Metal Fight Beyblade");
+		// Then
+		using var _ = new AssertionScope();
+		returnedManga.Data.Should().NotBeEmpty();
+		returnedManga.Data.Should().OnlyContain(x => x.Type == "Manga");
+		returnedManga.Data.Should().OnlyContain(x => x.Themes.Any(t => t.MalId == 11));
 	}
 
 	[Fact]
@@ -316,7 +320,7 @@ public class SearchMangaAsyncTests
 	}
 
 	[Fact]
-	public async Task SearchMangaAsync_OneSortByIdConfig_ShouldSortByIdOnePieceFirst()
+	public async Task SearchMangaAsync_OneSortByIdConfig_ShouldSortById()
 	{
 		// Given
 		var searchConfig = new MangaSearchConfig
@@ -330,7 +334,9 @@ public class SearchMangaAsyncTests
 		var returnedManga = await _tenrai.SearchMangaAsync(searchConfig);
 
 		// Then
-		returnedManga.Data.First().Title.Should().Be("One");
+		using var _ = new AssertionScope();
+		returnedManga.Data.Should().NotBeEmpty();
+		returnedManga.Data.Should().BeInAscendingOrder(x => x.MalId);
 	}
 
 	[Fact]

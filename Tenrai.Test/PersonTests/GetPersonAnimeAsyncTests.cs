@@ -54,7 +54,7 @@ public class GetPersonAnimeAsyncTests
 		using (new AssertionScope())
 		{
 			seki.Data.Should().HaveCountLessThan(20);
-			seki.Data.Should().Contain(x => x.Anime.Title.Equals("Anime Tenchou") && x.Position.Equals("add Theme Song Performance"));
+			seki.Data.Should().Contain(x => x.Anime.Title.Equals("Anime Tenchou") && x.Position.Equals("Theme Song Performance"));
 		}
 	}
 }

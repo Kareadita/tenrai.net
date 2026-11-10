@@ -12,7 +12,7 @@ public class AnimeStaffPosition
 	/// Person details.
 	/// </summary>
 	[JsonPropertyName("person")]
-	public MalImageSubItem Person { get; set; }
+	public PersonEntry Person { get; set; }
 
 	/// <summary>
 	/// Positions associated with staff member.

@@ -39,7 +39,7 @@ public class GetTopAnimeAsyncTests
 		top.Data.First().Duration.Should().Be("24 min per ep");
 		top.Data.First().Producers.Should().HaveCountGreaterOrEqualTo(4);
 		top.Data.First().Licensors.Should().HaveCount(1);
-		top.Data.First().Studios.Should().ContainSingle().Which.Name.Should().Be("Bones");
+		top.Data.First().Studios.Should().ContainSingle().Which.Name.Should().Be("Madhouse");
 	}
 
 	[Fact]
@@ -168,6 +168,8 @@ public class GetTopAnimeAsyncTests
 		var result = await _tenrai.GetTopAnimeAsync(searchConfig);
 
 		// Then
-		result.Data.First().Titles.Should().Contain(x => x.Title.Equals("Chainsaw Man Movie: Reze-hen"));
+		using var _ = new AssertionScope();
+		result.Data.Should().OnlyContain(x => x.Type == "Movie");
+		result.Data.Select(x => x.Title).Should().Contain("Chainsaw Man Movie: Reze-hen");
 	}
 }

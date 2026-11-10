@@ -28,6 +28,12 @@ public class Person
 	public string Name { get; set; }
 
 	/// <summary>
+	/// <see cref="Name"/> split into given and family name. <see cref="GivenName"/> and <see cref="FamilyName"/> hold the native-script name.
+	/// </summary>
+	[JsonIgnore]
+	public EntityName ParsedName => EntityName.Parse(Name);
+
+	/// <summary>
 	/// Person's given name..
 	/// </summary>
 	[JsonPropertyName("given_name")]

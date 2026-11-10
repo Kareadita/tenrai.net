@@ -27,6 +27,12 @@ public class Character
 	public string Name { get; set; }
 
 	/// <summary>
+	/// <see cref="Name"/> split into given and family name.
+	/// </summary>
+	[JsonIgnore]
+	public EntityName ParsedName => EntityName.Parse(Name);
+
+	/// <summary>
 	/// Character's name in kanji.
 	/// </summary>
 	[JsonPropertyName("name_kanji")]

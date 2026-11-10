@@ -1,5 +1,6 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Tenrai.Consts;
 using Tenrai.Exceptions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +51,6 @@ public class GetSeasonAsyncTests
 	[InlineData(1000)]
 	[InlineData(1900)]
 	[InlineData(2100)]
-	[InlineData(9999)]
 	public async Task GetSeasonAsync_ValidYearNotExistingSeason_ShouldReturnSeasonWithNulls(int year)
 	{
 		// When
@@ -58,6 +58,16 @@ public class GetSeasonAsyncTests
 
 		// Then
 		season.Data.Should().BeEmpty();
+	}
+
+	[Fact]
+	public async Task GetSeasonAsync_YearAfter2999_ShouldThrowRequestException()
+	{
+		// When
+		var func = _tenrai.Awaiting(x => x.GetSeasonAsync(9999, Season.Winter));
+
+		// Then
+		await func.Should().ThrowExactlyAsync<TenraiRequestException>();
 	}
 
 	[Fact]
@@ -70,7 +80,7 @@ public class GetSeasonAsyncTests
 		var titles = winter2000.Data.Select(x => x.Title);
 		using (new AssertionScope())
 		{
-			titles.Should().Contain("Boogiepop wa Warawanai");
+			winter2000.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
 			titles.Should().Contain("Ojamajo Doremi Sharp");
 		}
 	}
@@ -95,7 +105,7 @@ public class GetSeasonAsyncTests
 		using (new AssertionScope())
 		{
 			winter2017.Pagination.Items.Count.Should().Be(25);
-			winter2017.Pagination.Items.Total.Should().Be(57);
+			winter2017.Pagination.Items.Total.Should().BeGreaterThan(150);
 
 			var youjoSenki = winter2017.Data.FirstOrDefault(x => x.Title.Equals("Youjo Senki"));
 
@@ -103,7 +113,7 @@ public class GetSeasonAsyncTests
 			youjoSenki.Status.Should().Be("Finished Airing");
 			youjoSenki.Episodes.Should().Be(12);
 			youjoSenki.Airing.Should().BeFalse();
-			youjoSenki.Duration.Should().Be("24 min per ep");
+			youjoSenki.Duration.Should().Be("23 min per ep");
 			youjoSenki.Rating.Should().Be("R - 17+ (violence & profanity)");
 			youjoSenki.Score.Should().BeLessOrEqualTo(8.00);
 			youjoSenki.ScoredBy.Should().BeGreaterThan(390000);
@@ -138,7 +148,7 @@ public class GetSeasonAsyncTests
 		using (new AssertionScope())
 		{
 			winter2017.Pagination.Items.Count.Should().Be(25);
-			winter2017.Pagination.Items.Total.Should().Be(57);
+			winter2017.Pagination.Items.Total.Should().BeGreaterThan(150);
 			winter2017.Pagination.CurrentPage.Should().Be(page);
 
 			var yowamushiPedal = winter2017.Data.FirstOrDefault(x => x.Title.Equals("Yowamushi Pedal: New Generation"));

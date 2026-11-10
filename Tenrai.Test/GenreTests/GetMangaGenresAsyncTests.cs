@@ -19,7 +19,7 @@ public class GetMangaGenresAsyncTests
 	public async Task GetMangaGenresAsync_NoParameters_ShouldParseAllAvailableGenres()
 	{
 		// Given
-		const int expectedGenreCount = 153;
+		const int expectedGenreCount = 77;
 
 		// When
 		var result = await _tenrai.GetMangaGenresAsync();
@@ -30,9 +30,9 @@ public class GetMangaGenresAsyncTests
 
 	[Theory]
 	[InlineData(GenresFilter.Genres, 18)]
-	[InlineData(GenresFilter.ExplicitGenres, 21)]
-	[InlineData(GenresFilter.Themes, 56)]
-	[InlineData(GenresFilter.Demographics, 58)]
+	[InlineData(GenresFilter.ExplicitGenres, 1)]
+	[InlineData(GenresFilter.Themes, 53)]
+	[InlineData(GenresFilter.Demographics, 5)]
 	public async Task GetMangaGenresAsync_WithFilter_ShouldParseFilteredGenres(GenresFilter filter, int expectedGenreCount)
 	{
 		// When

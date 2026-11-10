@@ -44,7 +44,7 @@ public class GetAnimeEpisodesAsyncTests
 		using (new AssertionScope())
 		{
 			bebop.Data.Should().HaveCount(26);
-			bebop.Data.First().Aired.Should().BeSameDateAs(expectedDate);
+			bebop.Data.First().Aired?.ToUniversalTime().Should().BeSameDateAs(expectedDate);
 		}
 	}
 

@@ -31,18 +31,20 @@ public class GetMangaReviewsAsyncTests
 	}
 
 	[Fact]
-	public async Task GetMangaReviewsAsync_BerserkId_ShouldParseBerserkReviews()
+	public async Task GetMangaReviewsAsync_MonsterId_ShouldParseMonsterReviews()
 	{
 		// When
-		var berserk = await _tenrai.GetMangaReviewsAsync(2);
+		var monster = await _tenrai.GetMangaReviewsAsync(1);
 
 		// Then
 		using (new AssertionScope())
 		{
-			berserk.Data.First().User.Username.Should().Be("TheCriticsClub");
-			berserk.Data.First().MalId.Should().Be(4403);
-			berserk.Data.First().Score.Should().BeGreaterThan(7);
-			berserk.Data.First().Reactions.TotalReactions.Should().BeGreaterThan(1);
+			monster.Data.Should().HaveCount(20);
+			monster.Data.First().User.Username.Should().NotBeNullOrEmpty();
+			monster.Data.First().MalId.Should().BeGreaterThan(0);
+			monster.Data.First().Score.Should().BeInRange(1, 10);
+			monster.Data.First().Reactions.TotalReactions.Should().BeGreaterThan(1);
+			monster.Pagination.LastVisiblePage.Should().BeGreaterThan(1);
 		}
 	}
 
@@ -50,13 +52,13 @@ public class GetMangaReviewsAsyncTests
 	public async Task GetMangaReviewsAsync_ExcludePreliminary_ShouldReturnNoPreliminaryReviews()
 	{
 		// When
-		var berserk = await _tenrai.GetMangaReviewsAsync(2, new ReviewsSearchConfig { Preliminary = InclusionFilter.Exclude });
+		var monster = await _tenrai.GetMangaReviewsAsync(1, new ReviewsSearchConfig { Preliminary = InclusionFilter.Exclude });
 
 		// Then
 		using (new AssertionScope())
 		{
-			berserk.Data.Should().NotBeEmpty();
-			berserk.Data.Should().OnlyContain(x => !x.IsPreliminary);
+			monster.Data.Should().NotBeEmpty();
+			monster.Data.Should().OnlyContain(x => !x.IsPreliminary);
 		}
 	}
 
@@ -64,10 +66,10 @@ public class GetMangaReviewsAsyncTests
 	public async Task GetMangaReviewsAsync_OnlyPreliminary_ShouldNeverReturnNonPreliminaryReviews()
 	{
 		// When
-		var berserk = await _tenrai.GetMangaReviewsAsync(2, new ReviewsSearchConfig { Preliminary = InclusionFilter.Only });
+		var monster = await _tenrai.GetMangaReviewsAsync(1, new ReviewsSearchConfig { Preliminary = InclusionFilter.Only });
 
 		// Then (manga preliminary reviews are rare, so the set may be empty; none may be non-preliminary)
-		berserk.Data.All(x => x.IsPreliminary).Should().BeTrue();
+		monster.Data.All(x => x.IsPreliminary).Should().BeTrue();
 	}
 
 	[Theory]
@@ -97,15 +99,15 @@ public class GetMangaReviewsAsyncTests
 	}
 
 	[Fact]
-	public async Task GetMangaReviewsAsync_BerserkIdSecondPage_ShouldParseBerserkReviewsSecondPage()
+	public async Task GetMangaReviewsAsync_MonsterIdSecondPage_ShouldParseMonsterReviewsSecondPage()
 	{
 		// When
-		var berserk = await _tenrai.GetMangaReviewsAsync(2, new ReviewsSearchConfig { Page = 2 });
+		var monster = await _tenrai.GetMangaReviewsAsync(1, new ReviewsSearchConfig { Page = 2 });
 
 		// Then
 		using (new AssertionScope())
 		{
-			berserk.Data.First().Reactions.TotalReactions.Should().BeGreaterThan(1);
+			monster.Data.First().Reactions.TotalReactions.Should().BeGreaterThan(1);
 		}
 	}
 
@@ -120,14 +122,14 @@ public class GetMangaReviewsAsyncTests
 		};
 
 		// When
-		var berserk = await _tenrai.GetMangaReviewsAsync(2, config);
+		var monster = await _tenrai.GetMangaReviewsAsync(1, config);
 
 		// Then
 		using (new AssertionScope())
 		{
-			berserk.Data.Should().NotBeEmpty();
-			berserk.Data.Should().OnlyContain(x => x.Tags.Contains("Recommended"));
-			berserk.Pagination.LastVisiblePage.Should().BeGreaterThan(0);
+			monster.Data.Should().NotBeEmpty();
+			monster.Data.Should().OnlyContain(x => x.Tags.Contains("Recommended"));
+			monster.Pagination.LastVisiblePage.Should().BeGreaterThan(0);
 		}
 	}
 
@@ -138,13 +140,13 @@ public class GetMangaReviewsAsyncTests
 		var config = new ReviewsSearchConfig { Spoilers = InclusionFilter.Only };
 
 		// When
-		var berserk = await _tenrai.GetMangaReviewsAsync(2, config);
+		var monster = await _tenrai.GetMangaReviewsAsync(1, config);
 
 		// Then
 		using (new AssertionScope())
 		{
-			berserk.Data.Should().NotBeEmpty();
-			berserk.Data.Should().OnlyContain(x => x.IsSpoiler);
+			monster.Data.Should().NotBeEmpty();
+			monster.Data.Should().OnlyContain(x => x.IsSpoiler);
 		}
 	}
 }

@@ -27,7 +27,7 @@ public class GetTopPeopleAsyncTests
 		var kana = top.Data.Skip(1).First();
 		using (new AssertionScope())
 		{
-			kana.Name.Should().Be("Kana Hanazawa");
+			kana.Name.Should().Be("Hanazawa, Kana");
 			kana.GivenName.Should().Be("香菜");
 			kana.FamilyName.Should().Be("花澤");
 			kana.MalId.Should().Be(185);
@@ -46,7 +46,7 @@ public class GetTopPeopleAsyncTests
 		var kamiya = top.Data.First();
 		using (new AssertionScope())
 		{
-			kamiya.Name.Should().Be("Hiroshi Kamiya");
+			kamiya.Name.Should().Be("Kamiya, Hiroshi");
 			kamiya.GivenName.Should().Be("浩史");
 			kamiya.FamilyName.Should().Be("神谷");
 			kamiya.MalId.Should().Be(118);
@@ -75,7 +75,7 @@ public class GetTopPeopleAsyncTests
 		var top = await _tenrai.GetTopPeopleAsync(2);
 
 		// Then
-		top.Data.Select(x => x.Name).Should().Contain("Masaaki Yuasa");
+		top.Data.Select(x => x.Name).Should().Contain("Yuasa, Masaaki");
 	}
 
 	[Fact]

@@ -129,6 +129,23 @@ Most of these keep compiling, because the new type extends the old one.
 | `GetAnimeIdsAsync()` and the other bulk id calls: `BaseTenraiResponse<ICollection<long>>` | `IdsTenraiResponse` (adds `Total`) | You name the old type |
 | `GetAnimeFullDataAsync(id)`, `GetMangaFullDataAsync(id)`: `BaseTenraiResponse<T>` | `FullTenraiResponse<T>`, the same type as the batch overloads | Never: it extends `BaseTenraiResponse<T>` |
 | `UserRecommendation.Date`: `DateTime` | `DateTime?` (the API marks it nullable) | You use it as a non-null `DateTime` |
+| `AnimeStaffPosition.Person`: `MalImageSubItem` | `PersonEntry` (adds `ParsedName`) | You assign it |
+| `VoiceActingRole.Character`: `MalImageSubItem` | `CharacterEntry` (adds `ParsedName`) | You assign it, or read its `Title` (always null for a character) |
+| Article `Relations.People`, `Relations.Characters`: `ICollection<MalUrl>` | `ICollection<PersonUrl>`, `ICollection<CharacterUrl>` | You assign the collection, or declare it as `ICollection<MalUrl>` |
+
+## Names
+
+MyAnimeList sends person and character names as one string in "Family, Given" order, so `character.Name` is "Kurosaki, Ichigo". 4.0 adds `ParsedName` to every person and character, in the shape AniList uses:
+
+```csharp
+var ichigo = (await tenrai.GetCharacterAsync(5)).Data;
+ichigo.Name;                  // "Kurosaki, Ichigo"
+ichigo.ParsedName.FirstName;  // "Ichigo"
+ichigo.ParsedName.LastName;   // "Kurosaki"
+ichigo.ParsedName.FullName;   // "Ichigo Kurosaki"
+```
+
+A single name ("Megumin") has no `LastName`. If you split `Name` yourself, switch to `ParsedName`.
 
 ```csharp
 // 3.x

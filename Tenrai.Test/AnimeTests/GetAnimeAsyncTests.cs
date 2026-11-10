@@ -143,9 +143,9 @@ public class GetAnimeAsyncTests
 		using (new AssertionScope())
 		{
 			akiraAnime.Data.Producers.Should().HaveCountGreaterOrEqualTo(1);
-			akiraAnime.Data.Licensors.Should().HaveCount(1);
+			akiraAnime.Data.Licensors.Should().Contain(x => x.Name == "Funimation");
 			akiraAnime.Data.Studios.Should().ContainSingle();
-			akiraAnime.Data.Genres.Should().HaveCount(1);
+			akiraAnime.Data.Genres.Should().Contain(x => x.Name == "Action");
 			akiraAnime.Data.Approved.Should().BeTrue();
 		}
 	}

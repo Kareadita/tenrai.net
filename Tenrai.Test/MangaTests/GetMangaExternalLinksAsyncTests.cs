@@ -39,6 +39,6 @@ public class GetMangaExternalLinksAsyncTests
 		var links = await _tenrai.GetMangaExternalLinksAsync(1);
 
 		// Then
-		links.Data.Should().Contain(x => x.Name.Equals("Wikipedia") && x.Url.Equals("http://ja.wikipedia.org/wiki/MONSTER"));
+		links.Data.Should().Contain(x => x.Name.Equals("Wikipedia") && x.Url.StartsWith("https://ja.wikipedia.org/wiki/MONSTER"));
 	}
 }

@@ -35,15 +35,15 @@ public class GetMangaFullDataAsyncTests
 	public async Task GetMangaFullDataAsync_MonsterId_ShouldParseMonster()
 	{
 		// When
-		var monsterManga = await _tenrai.GetMangaFullDataAsync(1);
+		var monsterManga = await _tenrai.GetMangaFullDataAsync(1, new FullDataConfig { Sfw = false });
 
 		// Then
 		using var _ = new AssertionScope();
 		monsterManga.Data.Title.Should().Be("Monster");
-		monsterManga.Data.ExternalLinks.Should().Contain(x => x.Name.Equals("Wikipedia") && x.Url.Equals("http://ja.wikipedia.org/wiki/MONSTER"));
+		monsterManga.Data.ExternalLinks.Should().Contain(x => x.Name.Equals("Wikipedia") && x.Url.StartsWith("https://ja.wikipedia.org/wiki/MONSTER"));
 		monsterManga.Data.Relations.Should().HaveCount(2);
 		monsterManga.Data.Relations.Should().ContainSingle(x => x.Relation.Equals("Adaptation") && x.Entry.Count == 1);
-		monsterManga.Data.Relations.Should().ContainSingle(x => x.Relation.Equals("Side story") && x.Entry.Count == 1);
+		monsterManga.Data.Relations.Should().ContainSingle(x => x.Relation.Equals("Side Story") && x.Entry.Count == 1);
 	}
 
 	[Fact]

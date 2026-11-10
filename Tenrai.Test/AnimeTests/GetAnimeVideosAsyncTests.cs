@@ -56,7 +56,7 @@ public class GetAnimeVideosAsyncTests
 		using (new AssertionScope())
 		{
 			naruto.Data.MusicVideos.Should().HaveCountGreaterOrEqualTo(5);
-			naruto.Data.MusicVideos.Select(x => x.Title).Should().Contain("OP 2 (Artist ver.)");
+			naruto.Data.MusicVideos.Select(x => x.Title).Should().Contain(x => x.StartsWith("OP 2 (Artist ver.)"));
 			naruto.Data.MusicVideos.Select(x => x.Metadata.Author).Should().Contain("Analogfish");
 		}
 	}

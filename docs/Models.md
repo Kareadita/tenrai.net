@@ -97,7 +97,7 @@ Extends `BaseTenraiResponse<ICollection<IdEntry>>` with `Total` (int). Returned 
 
 | Property | Type | Description |
 |----------|------|-------------|
-| Person | MalImageSubItem | Person details |
+| Person | [PersonEntry](#personentry) | Person details, with `ParsedName` |
 | Position | ICollection&lt;string&gt; | Staff positions/roles |
 
 ### AnimeEpisode
@@ -189,7 +189,8 @@ One day of an anime's or manga's history. `T` is `AnimeStatistics` or `MangaStat
 |----------|------|-------------|
 | MalId | long | MAL id |
 | Url | string | Character page URL |
-| Name | string | Character name |
+| Name | string | Character name as MyAnimeList sends it, "Family, Given" ("Kurosaki, Ichigo") |
+| ParsedName | [EntityName](#entityname) | `Name` split into first, last and full name |
 | NameKanji | string | Name in kanji |
 | Nicknames | ICollection&lt;string&gt; | Nicknames |
 | About | string | About character |
@@ -206,9 +207,10 @@ One day of an anime's or manga's history. `T` is `AnimeStatistics` or `MangaStat
 |----------|------|-------------|
 | MalId | long | MAL id |
 | Url | string | Person URL |
-| Name | string | Name |
-| GivenName | string | Given name |
-| FamilyName | string | Family name |
+| Name | string | Name as MyAnimeList sends it, "Family, Given" ("Sawashiro, Miyuki") |
+| ParsedName | [EntityName](#entityname) | `Name` split into first, last and full name |
+| GivenName | string | Given name in native script ("みゆき") |
+| FamilyName | string | Family name in native script ("沢城") |
 | AlternativeNames | ICollection&lt;string&gt; | Alternate names |
 | Birthday | DateTime? | Birthday |
 | WebsiteUrl | string | Website URL |
@@ -275,7 +277,7 @@ A `News` plus `Content` (ContentBody: `Html`, `Markdown`) and `Relations` (NewsR
 
 ### ArticleDetails
 
-An `Article` plus `Content` (ContentBody) and `Relations` (ArticleRelations: `Anime`, `Manga`, `People`, `Characters`).
+An `Article` plus `Content` (ContentBody) and `Relations` (ArticleRelations: `Anime`, `Manga` as `MalUrl`; `People` as [PersonUrl](#personurl-and-characterurl), `Characters` as [CharacterUrl](#personurl-and-characterurl)).
 
 ### ContentTag
 
@@ -481,7 +483,7 @@ Also used for music videos (`MusicVideo.Video`).
 
 ### AuthorEntry
 
-A `MalUrl` plus `Role` (string), e.g. "Story & Art". Used by `Manga.Authors`.
+A `MalUrl` plus `Role` (string), e.g. "Story & Art", and `ParsedName` ([EntityName](#entityname)). Used by `Manga.Authors`.
 
 ### RelationEntry
 
@@ -489,7 +491,33 @@ A `MalUrl` plus `MediaType` (string, e.g. "Movie") and `Images` (ImagesSet). Use
 
 ### PersonEntry
 
-A `MalImageSubItem` plus `Favorites` (int?). Used by `VoiceActorEntry.Person`; `Favorites` is set on anime character lists and null on character voice lists.
+A `MalImageSubItem` plus `Favorites` (int?) and `ParsedName` ([EntityName](#entityname)). Used by `VoiceActorEntry.Person`, `AnimeStaffPosition.Person` and `UserFavorites.People`; `Favorites` is set on anime character lists and null on character voice lists and staff.
+
+### CharacterEntry
+
+`MalId` (long), `Name` (string), `ParsedName` ([EntityName](#entityname)), `Url` (string), `Images` (ImagesSet). Used by `AnimeCharacter.Character`, `MangaCharacter.Character`, `VoiceActingRole.Character` and `UserFavorites.Characters`.
+
+### PersonUrl and CharacterUrl
+
+A `MalUrl` plus `ParsedName` ([EntityName](#entityname)). Used by an article's `Relations.People` and `Relations.Characters`.
+
+### EntityName
+
+A person's or character's name split into parts, the shape AniList uses. MyAnimeList sends one string in "Family, Given" order; `ParsedName` splits it on the first `", "`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| FirstName | string | Given name, or the whole name when there is no family part |
+| LastName | string | Family name, null when there is none |
+| FullName | string | Given name then family name |
+
+| `Name` | FirstName | LastName | FullName |
+|--------|-----------|----------|----------|
+| "Kurosaki, Ichigo" | Ichigo | Kurosaki | Ichigo Kurosaki |
+| "Monkey D., Luffy" | Luffy | Monkey D. | Luffy Monkey D. |
+| "Megumin" | Megumin | null | Megumin |
+
+Every model that names a person or character has it: `Person`, `Character`, `PersonEntry`, `CharacterEntry`, `AuthorEntry`, `PersonUrl`, `CharacterUrl`.
 
 ### TopRecommendation
 

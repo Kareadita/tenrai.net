@@ -27,7 +27,7 @@ public class GetTopCharactersAsyncTests
 		var lelouch = top.Data.First();
 		using (new AssertionScope())
 		{
-			lelouch.Name.Should().Be("Lelouch Lamperouge");
+			lelouch.Name.Should().Be("Lamperouge, Lelouch");
 			lelouch.Nicknames.Should().HaveCountGreaterOrEqualTo(5);
 			lelouch.MalId.Should().Be(417);
 			lelouch.Favorites.Should().BeGreaterThan(85000);
@@ -41,10 +41,10 @@ public class GetTopCharactersAsyncTests
 		var top = await _tenrai.GetTopCharactersAsync();
 
 		// Then
-		var l = top.Data.Skip(2).First();
+		var l = top.Data.Single(x => x.MalId == 71);
 		using (new AssertionScope())
 		{
-			l.Name.Should().Be("L Lawliet");
+			l.Name.Should().Be("Lawliet, L");
 			l.Nicknames.Should().HaveCountGreaterOrEqualTo(4);
 			l.MalId.Should().Be(71);
 			l.Favorites.Should().BeGreaterThan(65000);

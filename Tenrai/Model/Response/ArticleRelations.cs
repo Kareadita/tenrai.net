@@ -12,11 +12,11 @@ public class ArticleRelations : NewsRelations
 	/// Related people.
 	/// </summary>
 	[JsonPropertyName("people")]
-	public ICollection<MalUrl> People { get; set; }
+	public ICollection<PersonUrl> People { get; set; }
 
 	/// <summary>
 	/// Related characters.
 	/// </summary>
 	[JsonPropertyName("characters")]
-	public ICollection<MalUrl> Characters { get; set; }
+	public ICollection<CharacterUrl> Characters { get; set; }
 }

@@ -38,7 +38,7 @@ public class GetCharacterFullDataAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		ichigo.Data.Name.Should().Be("Ichigo Kurosaki");
+		ichigo.Data.Name.Should().Be("Kurosaki, Ichigo");
 		ichigo.Data.NameKanji.Should().Be("黒崎 一護");
 		ichigo.Data.Animeography.Should().HaveCountGreaterOrEqualTo(10);
 		ichigo.Data.Animeography.Select(x => x.Anime.Title).Should().Contain("Bleach");

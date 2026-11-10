@@ -39,8 +39,8 @@ public class GetMangaRecommendationsAsyncTests
 		// Then
 		using (new AssertionScope())
 		{
-			//Vagabond
-			berserk.Data.First().Entry.MalId.Should().Be(656);
+			berserk.Data.Should().BeInDescendingOrder(x => x.Votes);
+			berserk.Data.Should().Contain(x => x.Entry.MalId == 656);
 			berserk.Data.First().Votes.Should().BeGreaterThan(25);
 			berserk.Data.Count.Should().BeGreaterThan(90);
 		}

@@ -61,7 +61,8 @@ public class GetCharacterAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		ichigo.Data.Name.Should().Be("Ichigo Kurosaki");
+		ichigo.Data.Name.Should().Be("Kurosaki, Ichigo");
+		ichigo.Data.ParsedName.FullName.Should().Be("Ichigo Kurosaki");
 		ichigo.Data.NameKanji.Should().Be("黒崎 一護");
 	}
 

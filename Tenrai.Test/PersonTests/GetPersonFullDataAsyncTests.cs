@@ -57,7 +57,7 @@ public class GetPersonFullDataAsyncTests
 		oda.Data.Mangaography.Should().Contain(x => x.Manga.Title.Equals("Cross Epoch") && x.Position.Equals("Story & Art"));
 		oda.Data.Mangaography.Should().Contain(x => x.Manga.Title.Equals("One Piece Novel: Mugiwara Stories") && x.Position.Equals("Art"));
 		oda.Data.Animeography.Should().HaveCountGreaterThan(30);
-		oda.Data.Animeography.Should().Contain(x => x.Anime.Title.Equals("One Piece") && x.Position.Equals("add Original Creator Airing"));
+		oda.Data.Animeography.Should().Contain(x => x.Anime.Title.Equals("One Piece") && x.Position.Equals("Original Creator"));
 		oda.Data.VoiceActingRoles.Should().ContainSingle();
 	}
 }

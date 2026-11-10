@@ -31,8 +31,8 @@ public class SearchCharacterAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		characters.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
-		characters.Data.First().Name.Should().Be("Spike Spiegel");
-		characters.Data.First().NameKanji.Should().Be("スパイク・スピーゲル");
+		characters.Data.Should().BeInDescendingOrder(x => x.Favorites);
+		characters.Data.First().NameKanji.Should().NotBeNullOrEmpty();
 		characters.Pagination.LastVisiblePage.Should().BeGreaterThan(2350);
 	}
 
@@ -82,8 +82,7 @@ public class SearchCharacterAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		characters.Data.Should().HaveCount(ParameterConsts.DefaultPageSize);
-		characters.Data.First().Name.Should().Be("Leorio Paladiknight");
-		characters.Data.First().NameKanji.Should().StartWith("レオリオ=パラディナｲﾄ");
+		characters.Data.Should().BeInDescendingOrder(x => x.Favorites);
 		characters.Pagination.LastVisiblePage.Should().BeGreaterThan(2350);
 		characters.Pagination.CurrentPage.Should().Be(2);
 		characters.Pagination.Items.Count.Should().Be(25);
@@ -103,8 +102,7 @@ public class SearchCharacterAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		characters.Data.Should().HaveCount(pageSize);
-		characters.Data.First().Name.Should().Be("Spike Spiegel");
-		characters.Data.First().NameKanji.Should().Be("スパイク・スピーゲル");
+		characters.Data.Should().BeInDescendingOrder(x => x.Favorites);
 		characters.Pagination.CurrentPage.Should().Be(1);
 		characters.Pagination.Items.Count.Should().Be(pageSize);
 		characters.Pagination.Items.PerPage.Should().Be(pageSize);
@@ -123,7 +121,7 @@ public class SearchCharacterAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		characters.Data.Should().HaveCount(pageSize);
-		characters.Data.First().Name.Should().Be("Rukia Kuchiki");
+		characters.Data.Should().BeInDescendingOrder(x => x.Favorites);
 		characters.Pagination.CurrentPage.Should().Be(2);
 		characters.Pagination.Items.Count.Should().Be(pageSize);
 		characters.Pagination.Items.PerPage.Should().Be(pageSize);
@@ -177,7 +175,7 @@ public class SearchCharacterAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().Contain(x => x.Name.Equals("Fake Lupin"));
-		people.Data.Should().Contain(x => x.Name.Equals("Arsène Lupin"));
+		people.Data.Should().Contain(x => x.Name.Equals("Lupin, Arsène"));
 		people.Data.Should().Contain(x => x.Name.Equals("Lupin II"));
 		people.Data.First().Name.Should().Be("Lupin");
 	}
@@ -193,10 +191,10 @@ public class SearchCharacterAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		people.Data.Should().Contain(x => x.Name.Equals("Fake Lupin"));
-		people.Data.Should().Contain(x => x.Name.Equals("Arsène Lupin"));
-		people.Data.Should().Contain(x => x.Name.Equals("Lupin II"));
-		people.Data.First().Name.Should().Be("Lupin III");
+		people.Data.Should().BeInDescendingOrder(x => x.Favorites);
+		people.Data.Should().Contain(x => x.Name.Equals("Lupin III"));
+		people.Data.Should().Contain(x => x.Name.Equals("Lupin, Arsène"));
+		people.Data.First().Name.Should().Be("Kuroba, Kaito");
 	}
 
 	[Fact]
@@ -210,11 +208,10 @@ public class SearchCharacterAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		people.Data.Should().Contain(x => x.Name.Equals("Fake Lupin"));
-		people.Data.Should().Contain(x => x.Name.Equals("Arsène Lupin"));
-		people.Data.Should().Contain(x => x.Name.Equals("Lupin II"));
-		people.Data.Last().Name.Should().Be("Arsene Lupin III");
-		people.Data.First().Favorites.Should().BeGreaterOrEqualTo(0);
+		people.Data.Should().BeInAscendingOrder(x => x.Favorites);
+		people.Data.Should().NotContain(x => x.Name.Equals("Kuroba, Kaito"));
+		people.Data.Should().NotContain(x => x.Name.Equals("Lupin III"));
+		people.Data.First().Favorites.Should().Be(0);
 	}
 
 	[Fact]
@@ -229,7 +226,8 @@ public class SearchCharacterAsyncTests
 		// Then
 		using var _ = new AssertionScope();
 		people.Data.Should().HaveCount(config.Limit.Value);
-		people.Data.Should().Contain(x => x.Name.Equals("Lupin"));
+		people.Data.Should().BeInAscendingOrder(x => x.MalId);
+		people.Data.First().Name.Should().Be("Lupin III");
 	}
 
 	[Fact]
@@ -243,10 +241,8 @@ public class SearchCharacterAsyncTests
 
 		// Then
 		using var _ = new AssertionScope();
-		people.Data.Should().ContainSingle();
-
-		var result = people.Data.First();
-		result.Name.Should().Be("Kirumi Toujou");
+		var result = people.Data.Single(x => x.MalId == 157604);
+		result.Name.Should().Be("Toujou, Kirumi");
 		result.Nicknames.Should().BeEmpty();
 		result.About.Should().NotBeEmpty();
 		result.MalId.Should().Be(157604);

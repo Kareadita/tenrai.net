@@ -8,6 +8,12 @@ namespace Tenrai;
 public class AuthorEntry : MalUrl
 {
 	/// <summary>
+	/// <see cref="MalUrl.Name"/> split into given and family name.
+	/// </summary>
+	[JsonIgnore]
+	public EntityName ParsedName => EntityName.Parse(Name);
+
+	/// <summary>
 	/// Part the author had, e.g. "Story &amp; Art", "Story" or "Art".
 	/// </summary>
 	[JsonPropertyName("role")]
