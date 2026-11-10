@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Kareadita/GitHubActions/main/Kavita.ReleaseTools.schema.json
+
+CsprojPath: "Tenrai/Tenrai.csproj"
+VersionXmlElement: "Version"
+
+ParseReleaseTypes:
+  BranchRequirements:
+    Stable:
+      StartWiths: "release/"
+      DoesNotContain: []
+    Nightly:
+      StartWiths: ""
+      DoesNotContain: ["release/"]
+
+BuildLibrary:
+  CsprojPath: "Tenrai/Tenrai.csproj"
+  OutputDirectory: "artifacts"
+
+PublishToNuGet:
+  OutputDirectory: "artifacts"
+
+# Only release/ branches: a second release for an unchanged version fails on the existing tag
+CreateGitHubRelease:
+  ReleaseTypes: [Stable]
+  AssetPath: "artifacts"
