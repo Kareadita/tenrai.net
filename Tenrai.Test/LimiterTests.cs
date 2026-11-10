@@ -1,119 +1,78 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Tenrai.Config;
+using Tenrai.Tests.Helpers;
 using Xunit;
 
 namespace Tenrai.Tests;
 
 public class LimiterTests
 {
+	// The stub answers instantly, so elapsed time is only the limiter's waits; 10% under each wait absorbs timer resolution
+	private const double Tolerance = 0.9;
+
 	[Fact]
 	public async Task GetAnimeAsync_DefaultLimiterWithTwoCalls_ShouldWait()
 	{
-		// Given
-		var jikan = new TenraiClient();
+		var elapsed = await TimeCallsAsync(TaskLimiterConfiguration.Default, calls: 2);
 
-		// When
-		var watch = System.Diagnostics.Stopwatch.StartNew();
-		await jikan.GetAnimeAsync(1);
-		await jikan.GetAnimeAsync(1);
-		watch.Stop();
-
-		// Then
-		watch.ElapsedMilliseconds.Should().BeGreaterThan(300);
+		elapsed.Should().BeGreaterThan((long)(300 * Tolerance));
 	}
 
 	[Fact]
 	public async Task GetAnimeAsync_NoneLimiter_ShouldNotWait()
 	{
-		// Given
-		var config = new TenraiClientConfiguration()
-		{
-			LimiterConfigurations = TaskLimiterConfiguration.None
-		};
-		var jikan = new TenraiClient(config);
+		var elapsed = await TimeCallsAsync(TaskLimiterConfiguration.None, calls: 2);
 
-		// When
-		var watch = System.Diagnostics.Stopwatch.StartNew();
-		await jikan.GetAnimeAsync(1);
-		await jikan.GetAnimeAsync(1);
-		watch.Stop();
-
-		// Then
-		// Usually calls takes around 200-300 ms each, so adding 300 ms wait should go over 700
-		watch.ElapsedMilliseconds.Should().BeLessThan(700);
+		elapsed.Should().BeLessThan(100);
 	}
 
 	[Fact]
 	public async Task GetAnimeAsync_OneCallPerSecond_ShouldWait()
 	{
-		// Given
-		var config = new TenraiClientConfiguration()
-		{
-			LimiterConfigurations = new List<TaskLimiterConfiguration>()
-			{
-				new(1, TimeSpan.FromMilliseconds(1000))
-			}
-		};
-		var jikan = new TenraiClient(config);
+		var elapsed = await TimeCallsAsync(new List<TaskLimiterConfiguration> { new(1, TimeSpan.FromMilliseconds(1000)) }, calls: 2);
 
-		// When
-		var watch = System.Diagnostics.Stopwatch.StartNew();
-		await jikan.GetAnimeAsync(1);
-		await jikan.GetAnimeAsync(1);
-		watch.Stop();
-
-		// Then
-		watch.ElapsedMilliseconds.Should().BeGreaterThan(1000);
+		elapsed.Should().BeGreaterThan((long)(1000 * Tolerance));
 	}
 
 	[Fact]
 	public async Task GetAnimeAsync_OneCallThreeSeconds_ShouldWait()
 	{
-		// Given
-		var config = new TenraiClientConfiguration()
-		{
-			LimiterConfigurations = new List<TaskLimiterConfiguration>()
-			{
-				new(1, TimeSpan.FromMilliseconds(3000))
-			}
-		};
-		var jikan = new TenraiClient(config);
+		var elapsed = await TimeCallsAsync(new List<TaskLimiterConfiguration> { new(1, TimeSpan.FromMilliseconds(3000)) }, calls: 2);
 
-		// When
-		var watch = System.Diagnostics.Stopwatch.StartNew();
-		await jikan.GetAnimeAsync(1);
-		await jikan.GetAnimeAsync(1);
-		watch.Stop();
-
-		// Then
-		watch.ElapsedMilliseconds.Should().BeGreaterThan(3000);
+		elapsed.Should().BeGreaterThan((long)(3000 * Tolerance));
 	}
 
 	[Fact]
 	public async Task GetAnimeAsync_OneCallPerSecondAndTwoPerFiveSeconds_ShouldWaitForLonger()
 	{
-		// Given
-		var config = new TenraiClientConfiguration()
+		var limits = new List<TaskLimiterConfiguration>
 		{
-			LimiterConfigurations = new List<TaskLimiterConfiguration>()
-			{
-				new(1, TimeSpan.FromMilliseconds(1000)),
-				new(2, TimeSpan.FromMilliseconds(5000))
-			}
+			new(1, TimeSpan.FromMilliseconds(1000)),
+			new(2, TimeSpan.FromMilliseconds(5000))
 		};
-		var jikan = new TenraiClient(config);
 
-		// When
-		var watch = System.Diagnostics.Stopwatch.StartNew();
-		await jikan.GetAnimeAsync(1);
-		await jikan.GetAnimeAsync(1);
-		await jikan.GetAnimeAsync(1);
+		var elapsed = await TimeCallsAsync(limits, calls: 3);
+
+		elapsed.Should().BeGreaterThan((long)(5000 * Tolerance));
+	}
+
+	private static async Task<long> TimeCallsAsync(List<TaskLimiterConfiguration> limits, int calls)
+	{
+		var handler = new StubHttpMessageHandler { Body = "{\"data\":null}" };
+		var client = handler.CreateClient(new TenraiClientConfiguration { LimiterConfigurations = limits });
+
+		var watch = Stopwatch.StartNew();
+		for (var i = 0; i < calls; i++)
+		{
+			await client.GetAnimeAsync(1);
+		}
 		watch.Stop();
 
-		// Then
-		watch.ElapsedMilliseconds.Should().BeGreaterThan(5);
+		handler.RequestCount.Should().Be(calls);
+		return watch.ElapsedMilliseconds;
 	}
 }

@@ -1,6 +1,8 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Tenrai.Config;
 using Tenrai.Exceptions;
+using Tenrai.Tests.Helpers;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,21 +11,16 @@ namespace Tenrai.Tests;
 
 public class ExceptionsTests
 {
-	private readonly ITenrai _tenrai;
-
-	public ExceptionsTests()
-	{
-		_tenrai = new TenraiClient(new Config.TenraiClientConfiguration { SuppressException = true });
-	}
+	private const string MangaNotFoundBody = "{\"status\":404,\"type\":\"ResourceNotFoundException\",\"message\":\"Manga with ID 999999999 not found.\",\"error\":\"The requested resource does not exist in our database or the ID is invalid.\",\"path\":\"/v1/manga/999999999\"}";
 
 	[Fact]
 	public async Task GetMangaAsync_NonExistentId_ShouldDeserializeTenraiErrorEnvelope()
 	{
 		// Given
-		var jikan = new TenraiClient();
+		var tenrai = NotFoundClient(suppressException: false);
 
 		// When
-		var func = jikan.Awaiting(x => x.GetMangaAsync(999999999));
+		var func = tenrai.Awaiting(x => x.GetMangaAsync(999999999));
 
 		// Then
 		var exceptionAssertion = await func.Should().ThrowExactlyAsync<TenraiRequestException>();
@@ -38,32 +35,65 @@ public class ExceptionsTests
 	}
 
 	[Fact]
-	public void GetAnimeAsync_WrongIdDoNotSurpressExceptions_ShouldThrowTenraiRequestExceptionGetAnime()
+	public async Task GetAnimeAsync_WrongIdDoNotSuppressExceptions_ShouldThrowTenraiRequestException()
 	{
-		// When
-		var func = _tenrai.Awaiting(x => x.GetAnimeAsync(2));
+		var func = NotFoundClient(suppressException: false).Awaiting(x => x.GetAnimeAsync(2));
 
-		// Then
-		func.Should().ThrowExactlyAsync<TenraiRequestException>();
+		await func.Should().ThrowExactlyAsync<TenraiRequestException>();
 	}
 
 	[Fact]
-	public void GetMangaAsync_WrongIdDoNotSurpressExceptions_ShouldThrowTenraiRequestExceptionGetManga()
+	public async Task GetMangaAsync_WrongIdDoNotSuppressExceptions_ShouldThrowTenraiRequestException()
 	{
-		// When
-		var func = _tenrai.Awaiting(x => x.GetMangaAsync(5));
+		var func = NotFoundClient(suppressException: false).Awaiting(x => x.GetMangaAsync(5));
 
-		// Then
-		func.Should().ThrowExactlyAsync<TenraiRequestException>();
+		await func.Should().ThrowExactlyAsync<TenraiRequestException>();
 	}
 
 	[Fact]
-	public void GetPerson_WrongIdDoNotSurpressExceptions_ShouldThrowTenraiRequestExceptionGetPerson()
+	public async Task GetPersonAsync_WrongIdDoNotSuppressExceptions_ShouldThrowTenraiRequestException()
 	{
-		// When
-		var func = _tenrai.Awaiting(x => x.GetPersonAsync(13308));
+		var func = NotFoundClient(suppressException: false).Awaiting(x => x.GetPersonAsync(13308));
 
-		// Then
-		func.Should().ThrowExactlyAsync<TenraiRequestException>();
+		await func.Should().ThrowExactlyAsync<TenraiRequestException>();
+	}
+
+	[Fact]
+	public async Task GetMangaAsync_NonExistentId_ShouldPutApiMessageInExceptionMessage()
+	{
+		var func = NotFoundClient(suppressException: false).Awaiting(x => x.GetMangaAsync(999999999));
+
+		var exceptionAssertion = await func.Should().ThrowExactlyAsync<TenraiRequestException>();
+		exceptionAssertion.Which.Message.Should().Be("GET request failed. Status code: NotFound Inner message: Manga with ID 999999999 not found.");
+	}
+
+	[Fact]
+	public async Task GetMangaAsync_NonJsonErrorBody_ShouldKeepStatusAndBody()
+	{
+		var handler = new StubHttpMessageHandler { StatusCode = HttpStatusCode.BadGateway, Body = "<html>502 Bad Gateway</html>" };
+		var tenrai = handler.CreateClient(new TenraiClientConfiguration { LimiterConfigurations = TaskLimiterConfiguration.None });
+
+		var func = tenrai.Awaiting(x => x.GetMangaAsync(1));
+
+		var exceptionAssertion = await func.Should().ThrowExactlyAsync<TenraiRequestException>();
+		using (new AssertionScope())
+		{
+			exceptionAssertion.Which.Message.Should().Be("GET request failed. Status code: BadGateway Inner message: <html>502 Bad Gateway</html>");
+			exceptionAssertion.Which.ApiError.Should().BeNull();
+		}
+	}
+
+	[Fact]
+	public async Task GetMangaAsync_WrongIdSuppressExceptions_ShouldReturnNull()
+	{
+		var result = await NotFoundClient(suppressException: true).GetMangaAsync(999999999);
+
+		result.Should().BeNull();
+	}
+
+	private static ITenrai NotFoundClient(bool suppressException)
+	{
+		var handler = new StubHttpMessageHandler { StatusCode = HttpStatusCode.NotFound, Body = MangaNotFoundBody };
+		return handler.CreateClient(new TenraiClientConfiguration { SuppressException = suppressException, LimiterConfigurations = TaskLimiterConfiguration.None });
 	}
 }

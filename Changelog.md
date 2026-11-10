@@ -44,6 +44,7 @@ Brings the client up to the Tenrai OpenAPI spec 1.0.30. Major, breaking release:
     - Partial dates on unaired titles (`"2027"`, `"2027-10"`) failed the whole response, which broke `GetUpcomingSeasonAsync` on every call and any search that included an unaired title. They now pad to the first day; `TimePeriod.Parts` says which pieces are known.
     - `EpisodeVideo.Images` was always null (mapped to `"Images"` instead of `"images"`).
     - Score filters are sent in invariant culture, so a comma-decimal locale no longer sends `7,5`.
+    - `TenraiRequestException` messages carry the API's error text ("Inner message: Manga with ID 999999999 not found.") instead of "System.Net.Http.HttpConnectionResponseContent". An error response that is not JSON, such as a proxy's HTML 502, now throws `TenraiRequestException` with its status code and body instead of "Serialization failed.".
     - `Title`, `TitleEnglish`, `TitleJapanese` and `TitleSynonyms` on `Anime` and `Manga` are no longer marked `[Obsolete]`. Tenrai still returns and documents these fields, so reading `anime.Title` no longer raises a CS0618 warning.
 
 ## 15.08.2026 - Version 3.1.0
