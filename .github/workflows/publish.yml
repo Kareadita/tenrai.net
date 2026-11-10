@@ -9,11 +9,58 @@ permissions:
   id-token: write
   pull-requests: read
 
+# Copy of Kareadita/GitHubActions release-tools.base.yml: called as a reusable workflow, NuGet trusted publishing rejects its token (401)
 jobs:
   run-release-tool:
+    name: Release
     if: github.repository == 'Kareadita/tenrai.net'
-    uses: Kareadita/GitHubActions/.github/workflows/release-tools.base.yml@main
-    secrets:
-      NUGET_USER: ${{ secrets.NUGET_USER }}
-    with:
-      config-path: release.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Find current Pull Request
+        uses: jwalton/gh-find-current-pr@f3d61b485d2801773f7a07b2aaa3306bd8f8e653 # v1.3.5
+        id: findPr
+        with:
+          state: all
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve PR refs
+        id: prRefs
+        if: steps.findPr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api "repos/${{ github.repository }}/pulls/${{ steps.findPr.outputs.number }}" \
+            --jq '"head_ref=\(.head.ref)\nbase_ref=\(.base.ref)"' >> "$GITHUB_OUTPUT"
+
+      - name: Setup .NET
+        if: steps.findPr.outputs.number != ''
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Login to NuGet
+        if: steps.findPr.outputs.number != ''
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Install Kavita.ReleaseTools
+        if: steps.findPr.outputs.number != ''
+        run: dotnet tool install --global Kavita.ReleaseTools
+
+      - name: Run Kavita.ReleaseTools
+        if: steps.findPr.outputs.number != ''
+        run: GITHUB_HEAD_REF="$HEAD_REF" kavita-releasetools run --config release.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REF: ${{ steps.prRefs.outputs.head_ref }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TARGET_BRANCH: ${{ steps.prRefs.outputs.base_ref }}
+          PR_TITLE: ${{ steps.findPr.outputs.title }}
+          PR_NUMBER: ${{ steps.findPr.outputs.number }}
+          PR_DESCRIPTION: ${{ steps.findPr.outputs.body }}
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
