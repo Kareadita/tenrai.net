@@ -9,7 +9,7 @@ Tenrai.Net is a .NET wrapper for the [Tenrai](https://tenrai.org) REST API (`htt
 - [API Reference](API.md) - All available endpoints with parameters, examples, and model links
 - [Models](Models.md) - Response model properties and types
 - [Rate Limiting](RateLimiting.md) - Configuring rate limits and Server Keys
-- [Migrating from Jikan.NET](Migrating-from-JikanDotNet.md) - Renames and breaking changes when moving from `JikanDotNet`
+- [Migrating from 3.x to 4.0](Migrating-from-3.x-to-4.0.md) - Breaking changes in 4.0 with before/after code
 - [Migrating from 1.x to 2.0](Migrating-from-1.x-to-2.0.md) - Older Jikan.NET migration guide
 
 ## Quick Start
@@ -48,4 +48,4 @@ All response models contain a `Data` property where the actual response data res
 - **Models:** [docs/Models.md](Models.md) - Response model classes with property tables.
 - **To add a new endpoint:** Add a subsection under the correct region in `docs/API.md` with: method name, description, parameters table, return type, code example, and link to model in `Models.md` if applicable.
 - **To add a new model:** Add a section in `docs/Models.md` with class name and properties table.
-- **Conceptual pages:** `docs/GettingStarted.md`, `docs/RateLimiting.md`, `docs/Migrating-from-JikanDotNet.md` - Edit these directly when updating setup, migration, or configuration docs.
+- **Conceptual pages:** `docs/GettingStarted.md`, `docs/RateLimiting.md`, `docs/Migrating-from-3.x-to-4.0.md` - Edit these directly when updating setup, migration, or configuration docs.

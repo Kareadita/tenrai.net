@@ -58,17 +58,28 @@ var tenrai = new TenraiClient(config);
 
 ### Safe-for-work filtering
 
-Adult entries are returned unless you ask for them to be filtered, as the API does. Turn filtering on for every call with the client setting, and override it on any single call through that call's config:
+**The client leaves out adult entries by default** (`TenraiClientConfiguration.Sfw` is `true`). This is the opposite of the API, which returns everything unless asked to filter. To get adult entries, turn the setting off for every call, or override it on a single call through that call's config:
 
 ```csharp
-var tenrai = new TenraiClient(new TenraiClientConfiguration
-{
-    Sfw = true,         // leave out adult entries everywhere
-    SfwStrict = false   // true also leaves out ecchi entries
-});
+// Default: every call that takes sfw sends sfw=true
+var tenrai = new TenraiClient();
 
-// This one call returns adult entries anyway
+// Adult entries everywhere, as the raw API returns them
+var unfiltered = new TenraiClient(new TenraiClientConfiguration { Sfw = false });
+
+// SfwStrict also leaves out ecchi entries (off by default)
+var strict = new TenraiClient(new TenraiClientConfiguration { SfwStrict = true });
+
+// One call returns adult entries even though the client filters
 var everything = await tenrai.SearchAnimeAsync(new AnimeSearchConfig { Query = "berserk", Sfw = false });
+```
+
+With dependency injection, set it where the client is registered:
+
+```csharp
+services.AddSingleton<ITenrai>(sp => new TenraiClient(
+    new TenraiClientConfiguration { Sfw = false },
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("Tenrai")));
 ```
 
 A config's `Sfw` and `SfwStrict` are `bool?`: `null` (the default) uses the client setting, `true` or `false` overrides it. The setting applies to plain overloads too (`GetCurrentSeasonAsync()`, `GetTopAnimeAsync()`), on every endpoint that takes `sfw`. Lists that take no filter besides SFW (relations, a character's or person's anime, manga, voice roles and full data, a single interest stack) have an overload taking an `SfwConfig` for the per-call override. Single news items and articles never send it, because the API answers 404 for an item that mentions adult entries.

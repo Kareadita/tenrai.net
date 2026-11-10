@@ -13,6 +13,18 @@ namespace Tenrai.Tests.SearchConfigTests;
 public class ClientSfwTests
 {
 	[Fact]
+	public async Task DefaultConfiguration_PlainSearch_SendsSfw()
+	{
+		var handler = new RecordingHandler();
+		var httpClient = new HttpClient(handler) { BaseAddress = new Uri("https://api.tenrai.org/v1/") };
+		var client = new TenraiClient(new TenraiClientConfiguration { LimiterConfigurations = TaskLimiterConfiguration.None }, httpClient);
+
+		await client.SearchAnimeAsync("berserk");
+
+		handler.LastQuery.Should().Be("?q=berserk&sfw=true");
+	}
+
+	[Fact]
 	public async Task ClientSfwOn_PlainSeasonCall_SendsSfw()
 	{
 		var (client, handler) = CreateClient(sfw: true);

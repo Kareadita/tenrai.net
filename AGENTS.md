@@ -8,7 +8,6 @@ Tenrai.Net is a .NET wrapper for the Tenrai REST API (`https://api.tenrai.org/v1
 
 - `README.md` explains the project, package installation, supported API areas, and changelog pointers.
 - `docs/README.md` is the documentation index and contributor guide for public API docs.
-- `docs/Tenrai-Conversion-Plan.md` tracks the Jikan.net → Tenrai.Net conversion (phases, decisions, differences).
 - `Tenrai.slnx` contains the library project and the xUnit test project.
 - `Tenrai/TenraiClient.cs` holds the client's fields, constructors and shared request helpers; the endpoint implementations are in one partial file per area (`Tenrai/TenraiClient.Anime.cs`, `TenraiClient.Manga.cs`, ...).
 - `Tenrai/Interfaces/ITenrai.*.cs` define the public client surface, one partial file per area matching the client's (`ITenrai.Anime.cs` pairs with `TenraiClient.Anime.cs`). A new method goes in both files of its area.
@@ -30,7 +29,7 @@ Tenrai.Net is a .NET wrapper for the Tenrai REST API (`https://api.tenrai.org/v1
 
 ## Docs Rule
 
-Canonical docs for this repo are `README.md`, `docs/README.md`, `docs/API.md`, `docs/Models.md`, `docs/GettingStarted.md`, `docs/RateLimiting.md`, and `docs/Migrating-from-1.x-to-2.0.md`.
+Canonical docs for this repo are `README.md`, `docs/README.md`, `docs/API.md`, `docs/Models.md`, `docs/GettingStarted.md`, `docs/RateLimiting.md`, `docs/Migrating-from-3.x-to-4.0.md`, and `docs/Migrating-from-1.x-to-2.0.md`.
 
 If a change touches user-facing behavior, a public API, package setup, rate limiting, migration behavior, or anything already documented, update the relevant canonical doc in the same change.
 

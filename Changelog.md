@@ -1,6 +1,6 @@
-## Unreleased - Version 4.0.0
+## 10.11.2026 - Version 4.0.0
 
-Brings the client up to the Tenrai OpenAPI spec 1.0.30. Major, breaking release.
+Brings the client up to the Tenrai OpenAPI spec 1.0.30. Major, breaking release: see [Migrating from 3.x to 4.0](docs/Migrating-from-3.x-to-4.0.md).
 
 - Breaking changes
     - Search configs: `PageSize` is renamed `Limit` (the API's name) and its maximum is now 100. `new AnimeSearchConfig { PageSize = 10 }` becomes `new AnimeSearchConfig { Limit = 10 }`.
@@ -10,8 +10,8 @@ Brings the client up to the Tenrai OpenAPI spec 1.0.30. Major, breaking release.
     - `UserRecommendation.Date` is `DateTime?`; the API marks it nullable.
     - `AnimeSearchConfig` and `MangaSearchConfig` take lists: `Type`, `Status` and `Rating` are now `Types`, `Statuses` and `Ratings`. `new AnimeSearchConfig { Type = AnimeType.TV }` becomes `new AnimeSearchConfig { Types = { AnimeType.TV } }`.
     - `MangaType.Novel` now searches novels (`novel`); light novels are `MangaType.LightNovel`. Code that used `Novel` for light novels still compiles but finds a different, much smaller set.
-    - Safe-for-work filtering is a client setting: `TenraiClientConfiguration.Sfw` and `SfwStrict`, both off by default as in the API. `Sfw`/`SfwStrict` on every config are now `bool?` and only override the client setting for that call; they no longer default to `true`, so `SearchAnimeAsync("berserk")` and the other searches return adult entries unless you set `Sfw = true` on the client or the config.
-    - `AnimeTopSearchConfig.Type`/`.Rating` and `MangaTopSearchConfig.Type` are now the lists `Types`/`Ratings`, their `Filter` is nullable (`TopAnimeFilter.NoFilter`/`TopMangaFilter.NoFilter` are removed; leave it `null` for the overall ranking), and their `Sort` is renamed `SortDirection`, as on every other config. `MangaTopSearchConfig` gains `Sfw`/`SfwStrict`.
+    - Safe-for-work filtering is a client setting, **on by default**: `TenraiClientConfiguration.Sfw` is `true`, so every call to an endpoint that takes `sfw` leaves out adult entries, plain overloads included. This now covers calls that never filtered in 3.x, such as `GetMangaRecommendationsAsync`, `GetMangaFullDataAsync`, relations and person/character lists. Set `Sfw = false` on the client to get adult entries back everywhere, as 3.x returned them from those calls. `Sfw`/`SfwStrict` on every config are now `bool?` and override the client setting for that call only. `SfwStrict` (also leaves out ecchi) is off by default.
+    - `AnimeTopSearchConfig.Type`/`.Rating` and `MangaTopSearchConfig.Type` are now the lists `Types`/`Ratings`, and their `Filter` is nullable (`TopAnimeFilter.NoFilter`/`TopMangaFilter.NoFilter` are removed; leave it `null` for the overall ranking). `MangaTopSearchConfig` gains `Sfw`/`SfwStrict`.
     - The "every" placeholder values are removed: `AnimeType.EveryType`, `MangaType.EveryType`, `AnimeAgeRating.EveryRating`, `AiringStatus.EveryStatus`, `PublishingStatus.EveryStatus`. Leave a list empty, or a single status `null`, for no filter. `AdaptedMangaSearchConfig.Status` is `PublishingStatus?`. `InterestStackType.EveryType` is removed too: `InterestStackSearchConfig.Type` is `InterestStackType?`.
     - `AnimeSearchOrderBy.Type`/`.Rating` and `MangaSearchOrderBy.Type` are removed (the API rejected them). `MangaGenreSearch.Doujinshi` is removed (no longer a MyAnimeList genre) and `MangaGenreSearch.GenderBender` is renamed `Crossdressing`.
     - Forum topics work again: `GetAnimeForumTopicsAsync` and `GetMangaForumTopicsAsync` are no longer `[Obsolete]` and return `PaginatedTenraiResponse<ICollection<ForumTopic>>`. The `ForumTopicType` overloads and the `ForumTopicType` enum are removed; use `AnimeForumSearchConfig`/`MangaForumSearchConfig` for paging and sorting.
@@ -30,7 +30,7 @@ Brings the client up to the Tenrai OpenAPI spec 1.0.30. Major, breaking release.
     - Top lists: `GetTopAnimeRecommendationsAsync` and `GetTopMangaRecommendationsAsync` (most voted recommendations), `GetTopEpisodesAsync` (sortable by score, votes or comments, with the anime each belongs to), `GetTopVideosAsync` (promos and music videos with the song and artist, filterable by airing state and year, sortable by views, likes and more).
     - `GetPreviousSeasonAsync` returns the season before the current one.
     - Episode (anime) and chapter (manga) discussion threads, 30 per page, sortable by number, creation date, comment count or last post. Other forum topics are not available from Tenrai.
-    - Batch full data: `GetAnimeFullDataAsync(id, FullDataConfig)` and `GetMangaFullDataAsync(id, FullDataConfig)` fetch up to 24 more entries in one request (`Included`, with ids not found in `MissingIds`), or search the denied/deleted archive with `Mode`. The plain `(long id)` overloads are unchanged.
+    - Batch full data: `GetAnimeFullDataAsync(id, FullDataConfig)` and `GetMangaFullDataAsync(id, FullDataConfig)` fetch up to 24 more entries in one request (`Included`, with ids not found in `MissingIds`), or search the denied/deleted archive with `Mode`.
     - `SfwStrict` on `AnimeSearchConfig`, `MangaSearchConfig`, `AnimeTopSearchConfig` and `InterestStackSearchConfig` also filters out ecchi entries.
     - Trailers and music videos: `Title`, `Views`, `Likes`, `Dislikes`, `CommentCount`, `PublishedAt`, `Duration`, `PrivacyStatus`, `RegionRestriction`, `Embeddable`.
     - `TimePeriod` (`Anime.Aired`, `Manga.Published`): `Text` (e.g. "Oct 2027 to ?") and `Parts` (day, month, year, each null when unknown).

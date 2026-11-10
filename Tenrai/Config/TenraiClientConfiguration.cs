@@ -25,9 +25,10 @@ public class TenraiClientConfiguration
 	public List<TaskLimiterConfiguration> LimiterConfigurations { get; set; }
 
 	/// <summary>
-	/// Filter out adult entries on every call to an endpoint that supports it. A config's own <c>Sfw</c> overrides this for that call. Defaults to <c>false</c>, the API's default.
+	/// Filter out adult entries on every call to an endpoint that supports it. A config's own <c>Sfw</c> overrides this for that call.
+	/// Defaults to <c>true</c>; set it to <c>false</c> to get adult entries back, which is the API's own default.
 	/// </summary>
-	public bool Sfw { get; set; }
+	public bool Sfw { get; set; } = true;
 
 	/// <summary>
 	/// Also filter out ecchi entries on every call to an endpoint that supports it. A config's own <c>SfwStrict</c> overrides this for that call.

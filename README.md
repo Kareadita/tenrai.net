@@ -39,7 +39,8 @@ Tenrai.Net is based on, and a huge thank you goes to, [@Ervie](https://github.co
 - Characters
     - Basic / Full information, Related anime, Related manga, Voice actors, Pictures
 - Reviews (anime, manga, recent, top) with sort, sentiment, and preliminary/spoiler filtering
-- Search: Anime, Manga, People, Characters
+- Search: Anime, Manga, People, Characters, Producers, Magazines
+- Safe-for-work filtering as one client setting, overridable per call
 - Seasonal Anime: Current, Previous, Upcoming, Archival
 - Anime scheduling (for current season)
 - Top: Anime, Manga, People, Characters, Reviews, Recommendations, Episodes, Videos (promos and music videos)
@@ -76,6 +77,14 @@ Then restore dependencies:
 ```
 
 # Changelog
+
+## 10.11.2026 - Version 4.0.0
+
+- Up to the Tenrai spec 1.0.30, major, breaking release: see [Migrating from 3.x to 4.0](docs/Migrating-from-3.x-to-4.0.md) and the [full changelog](Changelog.md)
+- Every filter the API has on search, seasons, schedule, top, random, sub-lists and bulk ids; anime and manga search configs take lists (`Types`, `Statuses`, `Ratings`)
+- New: news and articles, statistics history, catalogue lists (unapproved, denied, deleted, adapted), top recommendations, episodes and videos, previous season, batch full data, producer and magazine search; forum topics work again
+- Safe-for-work filtering is one client setting, **on by default**: every call that supports it leaves out adult entries, including ones that never filtered before (recommendations, full data, relations). Set `TenraiClientConfiguration.Sfw = false` to get them back; any call's config can override it
+- Models map the fields they were dropping (trailer stats, author roles, partial dates, favorites); partial dates on unaired titles no longer fail the response
 
 ## 15.08.2026 - Version 3.1.0
 
