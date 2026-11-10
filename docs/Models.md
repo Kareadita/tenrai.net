@@ -19,6 +19,30 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 | Data | T | The response data |
 | Pagination | Pagination | Page info (current page, has next, items count, etc.) |
 
+### FullTenraiResponse&lt;T&gt;
+
+Extends `BaseTenraiResponse<T>`. Returned by the `FullDataConfig` overloads of `GetAnimeFullDataAsync` and `GetMangaFullDataAsync`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Data | T | The entry from the path id |
+| Included | ICollection&lt;T&gt; | Entries for `FullDataConfig.Ids`, in the requested order. Null when no extra ids were sent |
+| MissingIds | ICollection&lt;long&gt; | Extra ids not found in the searched catalogue or archive. Null when no extra ids were sent |
+
+### IdsTenraiResponse
+
+Extends `BaseTenraiResponse<ICollection<long>>` with `Total` (int), the number of ids. Returned by the bulk id methods.
+
+### IdEntriesTenraiResponse
+
+Extends `BaseTenraiResponse<ICollection<IdEntry>>` with `Total` (int). Returned by `GetAnimeIdEntriesAsync` and `GetMangaIdEntriesAsync`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| MalId | long | MAL id |
+| Title | string | Title |
+| Type | string | Type of the entry (e.g. "TV"), can be null |
+
 ---
 
 ## Anime
@@ -73,7 +97,7 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| Person | MalImageSubItem | Person details |
+| Person | [PersonEntry](#personentry) | Person details, with `ParsedName` |
 | Position | ICollection&lt;string&gt; | Staff positions/roles |
 
 ### AnimeEpisode
@@ -91,6 +115,8 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 | Synopsis | string | Synopsis |
 | ForumUrl | string | Forum discussion URL |
 | Score | double? | Average score |
+| Replies | int? | Replies in the forum discussion |
+| Images | ImagesSet | Episode thumbnail |
 
 ---
 
@@ -120,7 +146,7 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 | Synopsis | string | Synopsis |
 | Background | string | Background info |
 | Genres | ICollection&lt;MalUrl&gt; | Genres |
-| Authors | ICollection&lt;MalUrl&gt; | Authors |
+| Authors | ICollection&lt;AuthorEntry&gt; | Authors, with their role |
 | Serializations | ICollection&lt;MalUrl&gt; | Serializations |
 | Themes | ICollection&lt;MalUrl&gt; | Themes |
 | Demographics | ICollection&lt;MalUrl&gt; | Demographics |
@@ -132,7 +158,26 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 |----------|------|-------------|
 | Character | CharacterEntry | Character details |
 | Role | string | Role in manga |
+| Favorites | int | Favorites count |
+
+---
+
+## Statistics history
+
+### StatisticsHistoryEntry&lt;T&gt;
+
+One day of an anime's or manga's history. `T` is `AnimeStatistics` or `MangaStatistics`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Date | DateTime | Day the numbers were taken |
+| Score | double? | Score that day |
+| ScoredBy | int? | Number of scorers |
+| Rank | int? | Score rank |
+| Popularity | int? | Popularity rank |
+| Members | int? | Members count |
 | Favorites | int? | Favorites count |
+| Statistics | T | List status and score breakdown. Null before 2026-04-04 and for titles under 1000 members |
 
 ---
 
@@ -144,7 +189,8 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 |----------|------|-------------|
 | MalId | long | MAL id |
 | Url | string | Character page URL |
-| Name | string | Character name |
+| Name | string | Character name as MyAnimeList sends it, "Family, Given" ("Kurosaki, Ichigo") |
+| ParsedName | [EntityName](#entityname) | `Name` split into first, last and full name |
 | NameKanji | string | Name in kanji |
 | Nicknames | ICollection&lt;string&gt; | Nicknames |
 | About | string | About character |
@@ -161,9 +207,10 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 |----------|------|-------------|
 | MalId | long | MAL id |
 | Url | string | Person URL |
-| Name | string | Name |
-| GivenName | string | Given name |
-| FamilyName | string | Family name |
+| Name | string | Name as MyAnimeList sends it, "Family, Given" ("Sawashiro, Miyuki") |
+| ParsedName | [EntityName](#entityname) | `Name` split into first, last and full name |
+| GivenName | string | Given name in native script ("みゆき") |
+| FamilyName | string | Family name in native script ("沢城") |
 | AlternativeNames | ICollection&lt;string&gt; | Alternate names |
 | Birthday | DateTime? | Birthday |
 | WebsiteUrl | string | Website URL |
@@ -188,6 +235,56 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 | LastOnline | DateTime? | Last activity |
 | Birthday | DateTime? | Birthday |
 | Joined | DateTime? | Account creation date |
+
+---
+
+## News and Articles
+
+### News
+
+| Property | Type | Description |
+|----------|------|-------------|
+| MalId | long | News MAL id |
+| Url | string | News URL |
+| Title | string | Title |
+| Date | DateTime? | Publish date |
+| Author | string | Author username |
+| AuthorUrl | string | Author profile URL |
+| ForumUrl | string | Discussion URL |
+| Images | ImagesSet | Header image |
+| Comments | int? | Comment count |
+| Excerpt | string | Opening text |
+
+### NewsDetails
+
+A `News` plus `Content` (ContentBody: `Html`, `Markdown`) and `Relations` (NewsRelations: `Anime`, `Manga`, each `ICollection<MalUrl>`).
+
+### Article
+
+| Property | Type | Description |
+|----------|------|-------------|
+| MalId | long | Article MAL id |
+| Url | string | Article URL |
+| Title | string | Title |
+| Summary | string | Author's summary |
+| PublishedAt | DateTimeOffset? | Publish time |
+| Author | string | Author username |
+| AuthorUrl | string | Author profile URL |
+| Views | int | View count |
+| Tags | ICollection&lt;string&gt; | Tags, e.g. "Spoiler" |
+| Images | ImagesSet | Header image |
+| Excerpt | string | Opening text |
+
+### ArticleDetails
+
+An `Article` plus `Content` (ContentBody) and `Relations` (ArticleRelations: `Anime`, `Manga` as `MalUrl`; `People` as [PersonUrl](#personurl-and-characterurl), `Characters` as [CharacterUrl](#personurl-and-characterurl)).
+
+### ContentTag
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Name | string | Tag name, as passed to `Tag` on a search config |
+| Count | int | Items with this tag |
 
 ---
 
@@ -227,6 +324,7 @@ Extends `BaseTenraiResponse<T>` with pagination metadata.
 | IsSpoiler | bool | Contains spoilers |
 | IsPreliminary | bool | Written before the entry finished airing/publishing |
 | Tags | ICollection&lt;string&gt; | Sentiment tags (e.g. "Recommended", "Mixed Feelings", "Not Recommended") |
+| Entry | MalImageSubItem | Anime or manga reviewed. Set on recent and top reviews, null on an entry's own reviews |
 
 ---
 
@@ -360,8 +458,85 @@ Contains image URLs in various formats (e.g. Jpg, Webp) and sizes (e.g. ImageUrl
 
 | Property | Type | Description |
 |----------|------|-------------|
-| From | DateTimeOffset? | Start (preserves UTC offset returned by API) |
-| To | DateTimeOffset? | End (preserves UTC offset returned by API) |
+| From | DateTimeOffset? | Start (preserves UTC offset returned by API). A partial date such as `"2027-10"` becomes 2027-10-01 |
+| To | DateTimeOffset? | End, same rules as `From` |
+| Parts | TimePeriodParts | `From` and `To` as `DateParts` (`Day`, `Month`, `Year`, each `int?`). A null `Day` means `From`'s day was padded |
+| Text | string | Display text, e.g. "Sep 29, 2023 to Mar 22, 2024" or "Oct 2027 to ?" |
+
+### AnimeTrailer
+
+| Property | Type | Description |
+|----------|------|-------------|
+| YoutubeId | string | YouTube video id |
+| Url | string | Video URL |
+| EmbedUrl | string | Embed URL |
+| Image | Image | Thumbnail in several sizes |
+| Title | string | Video title |
+| Views, Likes, Dislikes, CommentCount | long? | YouTube counts |
+| PublishedAt | DateTimeOffset? | Publish time on YouTube |
+| Duration | TimeSpan? | Video length |
+| PrivacyStatus | string | e.g. "public" |
+| RegionRestriction | RegionRestriction | `Allowed` and `Blocked` country codes. Null when unrestricted |
+| Embeddable | bool? | Can be embedded |
+
+Also used for music videos (`MusicVideo.Video`).
+
+### AuthorEntry
+
+A `MalUrl` plus `Role` (string), e.g. "Story & Art", and `ParsedName` ([EntityName](#entityname)). Used by `Manga.Authors`.
+
+### RelationEntry
+
+A `MalUrl` plus `MediaType` (string, e.g. "Movie") and `Images` (ImagesSet). Used by `RelatedEntry.Entry`.
+
+### PersonEntry
+
+A `MalImageSubItem` plus `Favorites` (int?) and `ParsedName` ([EntityName](#entityname)). Used by `VoiceActorEntry.Person`, `AnimeStaffPosition.Person` and `UserFavorites.People`; `Favorites` is set on anime character lists and null on character voice lists and staff.
+
+### CharacterEntry
+
+`MalId` (long), `Name` (string), `ParsedName` ([EntityName](#entityname)), `Url` (string), `Images` (ImagesSet). Used by `AnimeCharacter.Character`, `MangaCharacter.Character`, `VoiceActingRole.Character` and `UserFavorites.Characters`.
+
+### PersonUrl and CharacterUrl
+
+A `MalUrl` plus `ParsedName` ([EntityName](#entityname)). Used by an article's `Relations.People` and `Relations.Characters`.
+
+### EntityName
+
+A person's or character's name split into parts, the shape AniList uses. MyAnimeList sends one string in "Family, Given" order; `ParsedName` splits it on the first `", "`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| FirstName | string | Given name, or the whole name when there is no family part |
+| LastName | string | Family name, null when there is none |
+| FullName | string | Given name then family name |
+
+| `Name` | FirstName | LastName | FullName |
+|--------|-----------|----------|----------|
+| "Kurosaki, Ichigo" | Ichigo | Kurosaki | Ichigo Kurosaki |
+| "Monkey D., Luffy" | Luffy | Monkey D. | Luffy Monkey D. |
+| "Megumin" | Megumin | null | Megumin |
+
+Every model that names a person or character has it: `Person`, `Character`, `PersonEntry`, `CharacterEntry`, `AuthorEntry`, `PersonUrl`, `CharacterUrl`.
+
+### TopRecommendation
+
+A `UserRecommendation` (`MalIds`, `Entries`, `Content`, `Date`, `User`) plus `Url` (string) and `Votes` (int). Returned by the top recommendations lists.
+
+### TopEpisode
+
+An [`AnimeEpisode`](#animeepisode) plus `Votes` (int?) and `Entry` (`MalImageSubItem`, the anime). `MalId` is the episode number, so two items can share it; `Entry.MalId` names the anime.
+
+### TopVideo
+
+An [`AnimeTrailer`](#animetrailer) plus `Entry` (`ICollection<TopVideoEntry>`), the anime the video was made for.
+
+`TopVideoEntry` is an [`Anime`](#anime) with the list fields only (no synopsis, broadcast, studios or genres) plus:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| VideoTitle | string | MyAnimeList's label, e.g. "PV 1" or "ED 1 (Anime ver.)" |
+| Meta | MusicVideoMetadata | Song `Title` and `Author` (the artist). Null on promos and on some music videos |
 
 ### ExternalLink
 
@@ -383,4 +558,4 @@ Contains image URLs in various formats (e.g. Jpg, Webp) and sizes (e.g. ImageUrl
 | Property | Type | Description |
 |----------|------|-------------|
 | Relation | string | Relation type |
-| Entry | ICollection&lt;MalUrl&gt; | Related entries |
+| Entry | ICollection&lt;RelationEntry&gt; | Related entries |

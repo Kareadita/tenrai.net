@@ -8,10 +8,10 @@ Tenrai.Net is a .NET wrapper for the Tenrai REST API (`https://api.tenrai.org/v1
 
 - `README.md` explains the project, package installation, supported API areas, and changelog pointers.
 - `docs/README.md` is the documentation index and contributor guide for public API docs.
-- `docs/Tenrai-Conversion-Plan.md` tracks the Jikan.net → Tenrai.Net conversion (phases, decisions, differences).
 - `Tenrai.slnx` contains the library project and the xUnit test project.
-- `Tenrai/TenraiClient.cs` contains the endpoint implementations.
-- `Tenrai/Interfaces/ITenrai.cs` defines the public client surface.
+- `Tenrai/TenraiClient.cs` holds the client's fields, constructors and shared request helpers; the endpoint implementations are in one partial file per area (`Tenrai/TenraiClient.Anime.cs`, `TenraiClient.Manga.cs`, ...).
+- `Tenrai/Interfaces/ITenrai.*.cs` define the public client surface, one partial file per area matching the client's (`ITenrai.Anime.cs` pairs with `TenraiClient.Anime.cs`). A new method goes in both files of its area.
+- `git config blame.ignoreRevsFile .git-blame-ignore-revs` makes `git blame` skip the whole-repo formatting commits listed there.
 - `Tenrai/Model/Response`, `Tenrai/Model/Base`, `Tenrai/Model/Search`, and `Tenrai/Enumerations` hold public response models, wrappers, search configs, and enums.
 - `Tenrai.Test` contains xUnit tests. Many tests call the live public Tenrai API and may be network-sensitive.
 
@@ -19,17 +19,17 @@ Tenrai.Net is a .NET wrapper for the Tenrai REST API (`https://api.tenrai.org/v1
 
 - Preserve public API compatibility unless the task explicitly asks for a breaking change.
 - Keep `ITenrai` and `TenraiClient` aligned when adding or changing client methods.
-- Endpoints Tenrai does not implement (users, clubs, watch, forum topics, user updates) are kept but marked `[Obsolete]` and throw `NotSupportedException`; do not re-enable them against Tenrai.
+- Endpoints Tenrai does not implement (users, clubs, watch, user updates) are kept but marked `[Obsolete]` and throw `NotSupportedException`; do not re-enable them against Tenrai.
 - Validate public inputs with `Guard` before building endpoint routes.
 - Prefer `TenraiEndpointConsts` for route segments instead of repeating string literals.
 - Response models should use `System.Text.Json.Serialization.JsonPropertyName` for JSON field mapping.
 - Keep XML documentation on public types and members meaningful because the package emits documentation files.
-- In C# code, use braces for `if` and `else` blocks, including single-line branches.
-- Follow the style of the file being edited. This repo currently has a mix of block-scoped and file-scoped namespaces; do not reformat unrelated files.
+- In C# code, an `if` may skip braces only when its body is an immediate exit (`return`, `throw`, `continue`, `break`) on the same line: `if (arg == null) throw new TenraiValidationException(...);`. Every other `if` and `else` body gets braces, even a single statement.
+- C# files use file-scoped namespaces (`namespace Tenrai;`) and tabs for indentation, as set in `.editorconfig`.
 
 ## Docs Rule
 
-Canonical docs for this repo are `README.md`, `docs/README.md`, `docs/API.md`, `docs/Models.md`, `docs/GettingStarted.md`, `docs/RateLimiting.md`, and `docs/Migrating-from-1.x-to-2.0.md`.
+Canonical docs for this repo are `README.md`, `docs/README.md`, `docs/API.md`, `docs/Models.md`, `docs/GettingStarted.md`, `docs/RateLimiting.md`, `docs/Migrating-from-3.x-to-4.0.md`, and `docs/Migrating-from-1.x-to-2.0.md`.
 
 If a change touches user-facing behavior, a public API, package setup, rate limiting, migration behavior, or anything already documented, update the relevant canonical doc in the same change.
 
@@ -54,3 +54,11 @@ dotnet test Tenrai.Test/Tenrai.Tests.csproj --filter FullyQualifiedName~GetAnime
 ```
 
 Before relying on full test results, remember that many tests hit the live Tenrai API and can fail because of network, upstream data, or rate limiting rather than local code.
+
+Test classes that call the live API carry `[Trait("Category", "Integration")]` next to `[Collection("TenraiTests")]`; give a new live test class both. Pull requests run only the offline tests (`.github/workflows/build-and-test.yml`):
+
+```bash
+dotnet test Tenrai.Test/Tenrai.Tests.csproj --filter "Category!=Integration"
+```
+
+The live suite runs on demand from the same workflow (Run workflow), or locally with `--filter "Category=Integration"`.
