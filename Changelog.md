@@ -1,3 +1,7 @@
+## 10.11.2026 - Version 4.0.1
+
+- Fixed `ServerKey` being ignored when you pass your own `HttpClient` (the `IHttpClientFactory` setup). Requests went out without the `X-Server-Key` header while the client still throttled at the Server Key rate, so they ran faster than Tenrai allows anonymous callers. The header is now added to your `HttpClient`, unless it already carries one.
+
 ## 10.11.2026 - Version 4.0.0
 
 Brings the client up to the Tenrai OpenAPI spec 1.0.30. Major, breaking release: see [Migrating from 3.x to 4.0](docs/Migrating-from-3.x-to-4.0.md).
