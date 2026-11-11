@@ -34,6 +34,26 @@ public class PeopleConfigTests
 	}
 
 	[Fact]
+	public void PersonSearchConfig_BerserkStoryAuthorsByMangaCredits_BuildsQuery()
+	{
+		var config = new PersonSearchConfig
+		{
+			MangaIds = { 2 },
+			Credits = { PersonCredit.Author },
+			AuthorRole = AuthorRole.Story,
+			Positions = { StaffPosition.SecondKeyAnimation },
+			GenreIds = { 41 },
+			MinimumMangaCredits = 1,
+			LastCreditBefore = 2021,
+			Sfw = false,
+			OrderBy = PersonSearchOrderBy.MangaCredits,
+			SortDirection = SortDirection.Descending
+		};
+
+		config.ConfigToString().Should().Be("?manga=2&credit=author&position=2nd_key_animation&author_role=story&genres=41&last_credit_before=2021&min_manga_credits=1&order_by=manga_credits&sort=desc");
+	}
+
+	[Fact]
 	public void ProducerSearchConfig_StudiosActiveSince2020ByCount_BuildsQuery()
 	{
 		var config = new ProducerSearchConfig

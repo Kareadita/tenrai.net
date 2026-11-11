@@ -1685,9 +1685,34 @@ var results = await tenrai.SearchPersonAsync("miyazaki");
 
 // The most favorited people
 var popular = await tenrai.SearchPersonAsync(new PersonSearchConfig { MinimumFavorites = 50000 });
+
+// Berserk's writer
+var writer = await tenrai.SearchPersonAsync(new PersonSearchConfig { MangaIds = { 2 }, AuthorRole = AuthorRole.Story });
 ```
 
-`PersonSearchConfig` takes `Query`, `Letter`, `MinimumFavorites`/`MaximumFavorites`, `OrderBy` (`MalId`, `Name`, `Birthday`, `Favorites`), `SortDirection`, `Page` and `Limit`.
+#### PersonSearchConfig
+
+| Property | Type | Description |
+|----------|------|-------------|
+| Query, Letter | string, char? | Name search |
+| GivenName, FamilyName | string | Whole name part, ignoring case. MyAnimeList stores these in Japanese for Japanese people: Kentarou Miura's family name is "三浦", so `FamilyName = "Miura"` finds no one. Use `Query` for romanized names |
+| HasBirthday, HasImage, HasAbout, HasWebsite, HasAlternateNames, HasFamilyName | bool? | `true` or `false` filters on whether the field is set |
+| AnimeIds, MangaIds, CharacterIds | ICollection&lt;long&gt; | Credited in any of these anime (staff or voice), authors of any of these manga, voices of any of these characters |
+| Credits, ExcludedCredits | ICollection&lt;PersonCredit&gt; | `Voice`, `Staff` or `Author` |
+| Positions, ExcludedPositions | ICollection&lt;StaffPosition&gt; | Staff jobs, in `AnimeIds` when set, otherwise in any anime |
+| AuthorRole | AuthorRole? | `Story` or `Art`, in `MangaIds` when set, otherwise in any manga |
+| GenreIds, ExcludedGenreIds | ICollection&lt;long&gt; | Genre, theme or demographic ids. Ids, because the same genre differs per kind (Seinen is 42 on anime, 41 on manga) |
+| ProducerIds, MagazineIds | ICollection&lt;long&gt; | Credited in anime of these studios or producers; authors of manga in these magazines |
+| AnimeTypes, MangaTypes, Sources | ICollection&lt;AnimeType&gt;, &lt;MangaType&gt;, &lt;AnimeSource&gt; | Types and source material of the titles they are credited in |
+| Seasons, SeasonYears | ICollection&lt;Season&gt;, ICollection&lt;int&gt; | Credited in an anime of these MyAnimeList debut seasons and years |
+| Airing, Upcoming, Publishing | bool? | Credited in an anime airing now, an anime not aired yet, a manga publishing now |
+| VoiceLanguages, ExcludedVoiceLanguages | ICollection&lt;VoiceLanguage&gt; | Voice credits in (or not in) these languages |
+| ActiveAfter, ActiveBefore | int? | Credited in a title that started in this year range |
+| DebutAfter, LastCreditBefore | int? | Earliest credit in this year or later; latest credit in this year or earlier |
+| MinimumFavorites ... MaximumVoiceLanguages | int? | Ranges for favorites, anime and manga credits, voice roles (all, main, supporting) and voice languages |
+| OrderBy, SortDirection | PersonSearchOrderBy, SortDirection | `MalId`, `Name`, `Birthday`, `Favorites`, `AnimeCredits`, `MangaCredits`, `VoiceRoles`, `Debut`, `LastCredit`. People with no credit come last for `Debut`/`LastCredit` |
+| Page, Limit | int? | Paging, 100 max |
+| Sfw, SfwStrict | bool? | Leave out people only credited in adult (and ecchi) entries. `null` (default) uses the [client setting](GettingStarted.md#safe-for-work-filtering) |
 
 ### SearchCharacterAsync
 
