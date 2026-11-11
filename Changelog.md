@@ -1,4 +1,4 @@
-## Unreleased - Version 4.1.0
+## 11.11.2026 - Version 4.1.0
 
 Brings the client up to the Tenrai OpenAPI spec 1.0.31.
 

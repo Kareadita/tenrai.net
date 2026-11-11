@@ -79,6 +79,12 @@ Then restore dependencies:
 
 # Changelog
 
+## 11.11.2026 - Version 4.1.0
+
+- Up to the Tenrai spec 1.0.31: people search takes every filter the API has, character search adds upcoming, publishing and season filters
+- `TenraiSpec.SupportedVersion` and `TenraiSpec.ChangelogUrl` say which Tenrai spec this release covers
+- People search now follows the client SFW setting (on by default), so it leaves out people only credited in adult entries
+
 ## 10.11.2026 - Version 4.0.1
 
 - Fixed `ServerKey` being ignored when you pass your own `HttpClient`: the `X-Server-Key` header is now added to it
