@@ -36,4 +36,34 @@ public enum PersonSearchOrderBy
 	/// </summary>
 	[Description("favorites")]
 	Favorites,
+
+	/// <summary>
+	/// Orders results by the number of anime the person is credited in, as staff or as a voice actor.
+	/// </summary>
+	[Description("anime_credits")]
+	AnimeCredits,
+
+	/// <summary>
+	/// Orders results by the number of manga the person is credited as an author of.
+	/// </summary>
+	[Description("manga_credits")]
+	MangaCredits,
+
+	/// <summary>
+	/// Orders results by the number of characters the person voiced.
+	/// </summary>
+	[Description("voice_roles")]
+	VoiceRoles,
+
+	/// <summary>
+	/// Orders results by the start year of the person's earliest credited anime or manga. People without one come last.
+	/// </summary>
+	[Description("debut")]
+	Debut,
+
+	/// <summary>
+	/// Orders results by the start year of the person's latest credited anime or manga. People without one come last.
+	/// </summary>
+	[Description("last_credit")]
+	LastCredit,
 }

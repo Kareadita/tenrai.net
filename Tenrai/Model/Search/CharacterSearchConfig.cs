@@ -95,6 +95,26 @@ public class CharacterSearchConfig: ISearchConfig, ISfwConfig
 	public bool? Airing { get; set; }
 
 	/// <summary>
+	/// True for characters in at least one anime that has not aired yet, false for characters in none.
+	/// </summary>
+	public bool? Upcoming { get; set; }
+
+	/// <summary>
+	/// True for characters in at least one manga publishing now, false for characters in none.
+	/// </summary>
+	public bool? Publishing { get; set; }
+
+	/// <summary>
+	/// Characters in an anime of any of these MyAnimeList debut seasons. With <see cref="SeasonYears"/>, the season and year must match the same anime.
+	/// </summary>
+	public ICollection<Season> Seasons { get; set; } = new List<Season>();
+
+	/// <summary>
+	/// Characters in an anime of any of these MyAnimeList debut season years. Can differ from the calendar start year.
+	/// </summary>
+	public ICollection<int> SeasonYears { get; set; } = new List<int>();
+
+	/// <summary>
 	/// Voice actor person ids.
 	/// </summary>
 	public ICollection<long> VoiceActorIds { get; set; } = new List<long>();
@@ -243,6 +263,10 @@ public class CharacterSearchConfig: ISearchConfig, ISfwConfig
 			.Add("role_only", RoleOnly)
 			.Add("appears_in", AppearsIn)
 			.Add("airing", Airing)
+			.Add("upcoming", Upcoming)
+			.Add("publishing", Publishing)
+			.AddList("season", Seasons)
+			.AddList("season_year", SeasonYears)
 			.AddList("voice_actors", VoiceActorIds)
 			.AddList("voice_language", VoiceLanguages)
 			.AddList("voice_language_exclude", ExcludedVoiceLanguages)

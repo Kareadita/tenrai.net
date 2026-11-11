@@ -1,3 +1,14 @@
+## 11.11.2026 - Version 4.1.0
+
+Brings the client up to the Tenrai OpenAPI spec 1.0.31.
+
+- Features
+    - `TenraiSpec.SupportedVersion` gives the Tenrai spec this release covers, and `TenraiSpec.ChangelogUrl` links the [Tenrai changelog](https://api.tenrai.org/changelog).
+    - Character search filters by characters in anime that have not aired yet (`Upcoming`), in manga publishing now (`Publishing`), and by the debut season and year of their anime (`Seasons`, `SeasonYears`).
+    - People search takes every filter the API has: people credited in given anime, manga or characters, by kind of credit (`PersonCredit`), staff job (`StaffPosition`) or author role, by genre, studio, magazine, title type, source, season, airing/upcoming/publishing, voice language, active and debut years, and ranges for credits and voice roles. It sorts by anime credits, manga credits, voice roles, debut and last credit. `GivenName`/`FamilyName` match MyAnimeList's Japanese names, so use `Query` for romanized ones.
+- Behavior change
+    - People search follows the client SFW setting, which is on by default, so it now leaves out people only credited in adult entries. Set `Sfw = false` on the client or on the `PersonSearchConfig` to get them back.
+
 ## 10.11.2026 - Version 4.0.1
 
 - Fixed `ServerKey` being ignored when you pass your own `HttpClient` (the `IHttpClientFactory` setup). Requests went out without the `X-Server-Key` header while the client still throttled at the Server Key rate, so they ran faster than Tenrai allows anonymous callers. The header is now added to your `HttpClient`, unless it already carries one.

@@ -26,6 +26,7 @@ Tenrai.Net is based on, and a huge thank you goes to, [@Ervie](https://github.co
     * No dependencies if you are using .NET 6.0+
     * Single dependency for .NET Framework (System.Text.Json).
 * Usable with Dependency Injection.
+* Built against a known Tenrai API spec: `TenraiSpec.SupportedVersion` gives the version, and the [Tenrai changelog](https://api.tenrai.org/changelog) (`TenraiSpec.ChangelogUrl`) lists what changed in the API since.
 
 # List of features
 
@@ -77,6 +78,12 @@ Then restore dependencies:
 ```
 
 # Changelog
+
+## 11.11.2026 - Version 4.1.0
+
+- Up to the Tenrai spec 1.0.31: people search takes every filter the API has, character search adds upcoming, publishing and season filters
+- `TenraiSpec.SupportedVersion` and `TenraiSpec.ChangelogUrl` say which Tenrai spec this release covers
+- People search now follows the client SFW setting (on by default), so it leaves out people only credited in adult entries
 
 ## 10.11.2026 - Version 4.0.1
 
