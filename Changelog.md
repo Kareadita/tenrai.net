@@ -1,3 +1,11 @@
+## Unreleased - Version 4.1.0
+
+Brings the client up to the Tenrai OpenAPI spec 1.0.31.
+
+- Features
+    - `TenraiSpec.SupportedVersion` gives the Tenrai spec this release covers, and `TenraiSpec.ChangelogUrl` links the [Tenrai changelog](https://api.tenrai.org/changelog).
+    - Character search filters by characters in anime that have not aired yet (`Upcoming`), in manga publishing now (`Publishing`), and by the debut season and year of their anime (`Seasons`, `SeasonYears`).
+
 ## 10.11.2026 - Version 4.0.1
 
 - Fixed `ServerKey` being ignored when you pass your own `HttpClient` (the `IHttpClientFactory` setup). Requests went out without the `X-Server-Key` header while the client still throttled at the Server Key rate, so they ran faster than Tenrai allows anonymous callers. The header is now added to your `HttpClient`, unless it already carries one.

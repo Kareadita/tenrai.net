@@ -1720,6 +1720,9 @@ var bebop = await tenrai.SearchCharacterAsync(new CharacterSearchConfig { AnimeI
 | RoleOnly | CharacterRole? | Characters only ever listed in this role |
 | AppearsIn | AppearsIn? | `Anime`, `Manga` or `Both` |
 | Airing | bool? | `true` for characters in an anime airing now, `false` for characters in none |
+| Upcoming | bool? | `true` for characters in an anime that has not aired yet, `false` for characters in none |
+| Publishing | bool? | `true` for characters in a manga publishing now, `false` for characters in none |
+| Seasons, SeasonYears | ICollection&lt;Season&gt;, ICollection&lt;int&gt; | Characters in an anime of these MyAnimeList debut seasons and years |
 | VoiceActorIds | ICollection&lt;long&gt; | Voice actor person ids |
 | VoiceLanguages, ExcludedVoiceLanguages | ICollection&lt;VoiceLanguage&gt; | Voiced (or not) in these languages, e.g. English but not Japanese |
 | MinimumFavorites ... MaximumVoiceActors | int? | Ranges for favorites, appearances (all, anime, manga), main and supporting roles, voice languages, voice actors |

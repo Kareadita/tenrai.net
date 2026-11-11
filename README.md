@@ -26,6 +26,7 @@ Tenrai.Net is based on, and a huge thank you goes to, [@Ervie](https://github.co
     * No dependencies if you are using .NET 6.0+
     * Single dependency for .NET Framework (System.Text.Json).
 * Usable with Dependency Injection.
+* Built against a known Tenrai API spec: `TenraiSpec.SupportedVersion` gives the version, and the [Tenrai changelog](https://api.tenrai.org/changelog) (`TenraiSpec.ChangelogUrl`) lists what changed in the API since.
 
 # List of features
 

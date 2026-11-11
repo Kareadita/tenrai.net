@@ -20,6 +20,20 @@ public class PeopleConfigTests
 	}
 
 	[Fact]
+	public void CharacterSearchConfig_UpcomingFall2026_BuildsQuery()
+	{
+		var config = new CharacterSearchConfig
+		{
+			Upcoming = true,
+			Publishing = false,
+			Seasons = { Season.Fall },
+			SeasonYears = { 2026 }
+		};
+
+		config.ConfigToString().Should().Be("?upcoming=true&publishing=false&season=fall&season_year=2026");
+	}
+
+	[Fact]
 	public void ProducerSearchConfig_StudiosActiveSince2020ByCount_BuildsQuery()
 	{
 		var config = new ProducerSearchConfig
